@@ -1,38 +1,198 @@
-.App {
-  text-align: center;
+:root {
+    --background: #171723;
+    --background-panel: #24273D;
+    --background-panel-darker: #1e2133;
+    --accent-purple: rgb(237, 75, 255);
+    --accent-blue: rgb(75, 75, 255);
+    --base-font: #dbdbdb;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/*Body / Base*/
+* {
+    font-family: 'Nunito', sans-serif;
+    color: #dbdbdb;
+}
+.body {
+    padding: 0;
+    box-sizing: border-box;
+    margin: 0;
+    background: var(--background);
+    height: 100vh;
+    min-width: 800px;
+    min-height: 350px;
+    width: 100vw;
+    overflow: hidden;
+}
+main {
+    height: 100%;
+    width: 100%;
+    display: flex;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/*Nav*/
+nav {
+    background: var(--background);
+    width: 100vw;
+    height: 40px;
+    display: flex;
+    background: linear-gradient(45deg, var(--accent-purple), var(--accent-blue));
+}
+.accountNavSection {
+    width: 15%;
+    min-width: 280px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+.accountNavSectionProfilePicture {
+    background: var(--background-panel);
+    width: 34px;
+    height: 34px;
+    margin: 3px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.accountNavSectionProfilePictureImage {
+    background: white;
+    width: 90%;
+    height: 90%;
+    border-radius: 50%;
+}
+.accountNavSectionUsername {
+    font-weight: 600;
+    color: var(--background-panel)
+}
+.tailNavSection {
+    height: 100%;
+    width: 85%;
+    display: flex;
+    align-items: end;
+}
+.navBackgroundChunk {
+    background: var(--background);
+    height: 35px;
+    width: 100%;
+    border-radius: 5px 0 0 0
+}
+.navBackgroundChisel {
+    background: var(--background);
+    height: 5px;
+    width:  5px;
+    margin-left: auto;
+    margin-top: auto;
+    position: relative;
+    mix-blend-mode: hard-light;
+}
+.navBackgroundChiselNegative {
+    height: 5px;
+    width: 5px;
+    background: grey;
+    border-radius: 0 0 100% 0;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+/*File Viewer*/
+.fileViewerContainer {
+    width: 15%;
+    height: 100%;
+    min-width: 288px;
+    box-sizing: border-box;
+    padding: 10px 5px 50px 10px;
+}
+.fileViewer {
+    background: var(--background-panel);
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
 }
 
-.App-link {
-  color: #61dafb;
+/*Source Code Editor*/
+.sourceCodeEditorContainer {
+    height: 100%;
+    width: 80%;
+    box-sizing: border-box;
+    padding: 10px 5px 50px 5px;
+}
+.sourceCodeEditor {
+    background: var(--background-panel);
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/*suggestions Viewer*/
+.suggestionsViewerContainer {
+    height: 100%;
+    width: 25%;
+    box-sizing: border-box;
+    padding: 10px 10px 50px 5px;
+    min-width: 400px;
+    max-width: 450px;
+}
+.suggestions {
+    background: var(--background-panel);
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}
+.suggestionsStats {
+    display: flex;
+    width: 100%;
+    padding-top: 8px;
+    justify-content: space-evenly;
+    padding-bottom: 8px;
+    background: var(--background-panel-darker);
+    border-radius: 5px 5px 0 0;
+}
+.suggestionCards{
+    width: 100%;
+    height: 80%;
+}
+.suggestionSettingsSection {
+    min-height: 100px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--background-panel-darker);
+    border-radius: 0 0 5px 5px;
+}
+
+/*GeneralViews*/
+.panelBody{
+    height: 99%;
+    width: 100%;
+}
+.bottomPanelQuickInfo {
+    width: 100%;
+    height: 1%;
+    max-height: 25px;
+    min-height: 25px;
+    background: var(--background-panel-darker);
+    border-radius: 0 0 5px 5px;
+    box-sizing: border-box;
+    display: flex;
+    padding-right: 10px;
+    padding-left:  10px;
+    align-items: center;
+}
+.bottomPanelQuickInfoStat {
+    font-size: 15px;
+    font-weight: 300;
+    width: fit-content;
+}
+.bottomPanelQuickInfoPad {
+    margin-left: 30px;
+}
+.bottomPanelRightAlign {
+    margin-left: auto;
 }

@@ -1,0 +1,43 @@
+.statBox {
+    width: 120px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    color: white;
+    font-size: 20px;
+    position: relative;
+    background: #1E2133;
+    overflow: hidden;
+}
+
+.statBoxTitle {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    margin: 0 0 0 10px;
+    line-height: 16px;
+}
+
+.statBoxNumber {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 500;
+    font-size: 30px;
+    margin: 0 0 0 10px;
+}
+
+.statBox::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 2px;
+    background: linear-gradient(45deg, var(--accent-purple), var(--accent-blue));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+}
