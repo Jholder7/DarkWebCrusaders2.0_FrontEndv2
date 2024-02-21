@@ -10,7 +10,9 @@ function SettingsButton(props) {
             <header>
                 <link rel="stylesheet" href="SettingsButton.css" />
             </header>
-            <span className="evalButtonText">{props.title}</span>
+            <div>
+                <span className="evalButtonText">{props.title}</span>
+            </div>
         </button>
     )
 }

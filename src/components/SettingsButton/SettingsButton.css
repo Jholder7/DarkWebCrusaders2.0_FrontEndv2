@@ -34,11 +34,21 @@
     -o-border-radius: 5px;
 }
 
-.evalButton:hover {
-    transition: background-color ease 1s;
-    background: linear-gradient(45deg, rgba(237, 75, 255, 0.40), rgba(75, 75, 255, 0.40));
+.evalButton > div {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.evalButton:active {
-    background: linear-gradient(45deg, rgba(237, 75, 255, 0.30), rgba(75, 75, 255, 0.30));
+.evalButton > div:hover  {
+    transition: 300ms;
+    background: rgba(0, 0, 0, 0.45);
+}
+
+.evalButton > div:active  {
+    transition: 300ms;
+    background: rgba(255, 255, 255, 0.45);
 }

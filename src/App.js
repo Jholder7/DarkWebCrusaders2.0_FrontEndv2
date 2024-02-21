@@ -4,6 +4,7 @@ import SettingsButton from "./components/SettingsButton/SettingsButton";
 import StatBox from "./components/StatBox/StatBox";
 import React, { useEffect } from 'react';
 import SettingsModal from "./components/SettingsModal/SettingsModal";
+import SuggestionCard from "./components/SuggestionCard/SuggestionCard";
 
 function App() {
   useEffect(() => {
@@ -68,7 +69,12 @@ function App() {
               <StatBox value="99%" title="Estimated Grade"/>
             </div>
             <div className="suggestionCards">
-
+              <SuggestionCard />
+              <SuggestionCard />
+              <SuggestionCard />
+              <SuggestionCard />
+              <SuggestionCard />
+              <SuggestionCard />
             </div>
             <div className="suggestionSettingsSection">
               <SettingsButton title="Evaluation Settings" callback={() => {SettingsModal.setDisplay(true)}}/>
