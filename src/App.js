@@ -2,10 +2,17 @@ import './App.css';
 import Editor from "./components/Editor/Editor";
 import SettingsButton from "./components/SettingsButton/SettingsButton";
 import StatBox from "./components/StatBox/StatBox";
+import React, { useEffect } from 'react';
+import SettingsModal from "./components/SettingsModal/SettingsModal";
 
 function App() {
+  useEffect(() => {
+    document.title = 'Programtastic - App';
+  }, []);
+
   return (
     <div>
+      <SettingsModal />
       <header>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
@@ -64,7 +71,7 @@ function App() {
 
             </div>
             <div className="suggestionSettingsSection">
-              <SettingsButton title="Evaluation Settings"/>
+              <SettingsButton title="Evaluation Settings" callback={() => {SettingsModal.setDisplay(true)}}/>
             </div>
           </div>
         </section>
