@@ -43,12 +43,12 @@
     align-items: center;
 }
 
-.evalButton > div:hover  {
+.evalButton > div:hover {
     transition: 300ms;
     background: rgba(0, 0, 0, 0.45);
 }
 
-.evalButton > div:active  {
+.evalButton > div:active {
     transition: 300ms;
     background: rgba(255, 255, 255, 0.45);
 }

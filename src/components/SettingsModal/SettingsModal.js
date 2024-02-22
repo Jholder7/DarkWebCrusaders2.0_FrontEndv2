@@ -14,7 +14,7 @@ class SettingsModal extends React.Component {
         this.setState({display: newBoolean});
     }
 
-    render () {
+    render() {
         return (
             <div className={this.state.display ? "settingsModal" : "hidden"}>
                 <header>

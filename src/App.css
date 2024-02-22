@@ -12,6 +12,7 @@
     font-family: 'Nunito', sans-serif;
     color: #dbdbdb;
 }
+
 .body {
     padding: 0;
     box-sizing: border-box;
@@ -23,6 +24,7 @@
     width: 100vw;
     overflow: hidden;
 }
+
 main {
     height: 100%;
     width: 100%;
@@ -37,6 +39,7 @@ nav {
     display: flex;
     background: linear-gradient(45deg, var(--accent-purple), var(--accent-blue));
 }
+
 .accountNavSection {
     width: 15%;
     min-width: 280px;
@@ -45,6 +48,7 @@ nav {
     align-items: center;
     position: relative;
 }
+
 .accountNavSectionProfilePicture {
     background: var(--background-panel);
     width: 34px;
@@ -55,37 +59,43 @@ nav {
     align-items: center;
     justify-content: center;
 }
+
 .accountNavSectionProfilePictureImage {
     background: white;
     width: 90%;
     height: 90%;
     border-radius: 50%;
 }
+
 .accountNavSectionUsername {
     font-weight: 600;
     color: var(--background-panel)
 }
+
 .tailNavSection {
     height: 100%;
     width: 85%;
     display: flex;
     align-items: end;
 }
+
 .navBackgroundChunk {
     background: var(--background);
     height: 35px;
     width: 100%;
     border-radius: 5px 0 0 0
 }
+
 .navBackgroundChisel {
     background: var(--background);
     height: 5px;
-    width:  5px;
+    width: 5px;
     margin-left: auto;
     margin-top: auto;
     position: relative;
     mix-blend-mode: hard-light;
 }
+
 .navBackgroundChiselNegative {
     height: 5px;
     width: 5px;
@@ -101,6 +111,7 @@ nav {
     box-sizing: border-box;
     padding: 10px 5px 50px 10px;
 }
+
 .fileViewer {
     background: var(--background-panel);
     height: 100%;
@@ -117,6 +128,7 @@ nav {
     box-sizing: border-box;
     padding: 10px 5px 50px 5px;
 }
+
 .sourceCodeEditor {
     background: var(--background-panel);
     height: 100%;
@@ -136,6 +148,7 @@ nav {
     min-width: 400px;
     max-width: 450px;
 }
+
 .suggestions {
     background: var(--background-panel);
     height: 100%;
@@ -144,6 +157,7 @@ nav {
     display: flex;
     flex-direction: column;
 }
+
 .suggestionsStats {
     display: flex;
     width: 100%;
@@ -153,11 +167,13 @@ nav {
     background: var(--background-panel-darker);
     border-radius: 5px 5px 0 0;
 }
-.suggestionCards{
+
+.suggestionCards {
     width: 100%;
     height: 80%;
     overflow-y: scroll;
 }
+
 .suggestionSettingsSection {
     min-height: 100px;
     width: 100%;
@@ -169,10 +185,11 @@ nav {
 }
 
 /*GeneralViews*/
-.panelBody{
+.panelBody {
     height: 99%;
     width: 100%;
 }
+
 .bottomPanelQuickInfo {
     width: 100%;
     height: 1%;
@@ -183,17 +200,20 @@ nav {
     box-sizing: border-box;
     display: flex;
     padding-right: 10px;
-    padding-left:  10px;
+    padding-left: 10px;
     align-items: center;
 }
+
 .bottomPanelQuickInfoStat {
     font-size: 15px;
     font-weight: 300;
     width: fit-content;
 }
+
 .bottomPanelQuickInfoPad {
     margin-left: 30px;
 }
+
 .bottomPanelRightAlign {
     margin-left: auto;
 }

@@ -2,11 +2,13 @@
     padding: 0;
     margin: 0;
 }
+
 .editorContainer {
     position: relative;
     width: 100%;
     height: 100%;
 }
+
 .editor {
     position: absolute !important;
     top: 0 !important;
@@ -16,15 +18,18 @@
     width: initial !important;
     height: initial !important;
 }
+
 .ace_editor div {
-    text-align:left !important;
+    text-align: left !important;
 }
-.ace_editor, .ace_editor *, .ace_editor div{
+
+.ace_editor, .ace_editor *, .ace_editor div {
     font-family: "JetBrains Mono", monospace !important;
     font-size: 14px !important;
     font-weight: 400 !important;
     letter-spacing: 0 !important;
 }
+
 .ace_gutter-cell {
     background: var(--background-panel);
     border-right: 1px solid #777882;;

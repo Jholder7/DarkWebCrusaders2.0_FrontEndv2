@@ -74,7 +74,8 @@
     transition: 300ms;
     background: rgba(0, 0, 0, 0.45);
 }
-.closeModal > div:active  {
+
+.closeModal > div:active {
     transition: 300ms;
     background: rgba(255, 255, 255, 0.45);
 }

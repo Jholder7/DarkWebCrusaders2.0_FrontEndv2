@@ -17,9 +17,11 @@ class SettingsButton extends React.Component {
         };
     }
 
-    render () {
+    render() {
         return (
-            <button className="evalButton" onClick={() => {this.state.callback()}}>
+            <button className="evalButton" onClick={() => {
+                this.state.callback()
+            }}>
                 <header>
                     <link type="text/css" href="SettingsButton.css"/>
                 </header>
