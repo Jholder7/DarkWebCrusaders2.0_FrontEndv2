@@ -1,20 +1,35 @@
 import React, {useCallback} from "react";
 import "./SettingsButton.css"
 
-function SettingsButton(props) {
+class SettingsButton extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            callback: {},
+            title: ""
+        };
+    }
 
-    let [callback, setCallback] = useCallback([props.callback])
+    static getDerivedStateFromProps(props, state) {
+        return {
+            callback: props.callback,
+            title: props.title
+        };
+    }
 
-    return (
-        <button className="evalButton" onClick={callback}>
-            <header>
-                <link rel="stylesheet" href="SettingsButton.css" />
-            </header>
-            <div>
-                <span className="evalButtonText">{props.title}</span>
-            </div>
-        </button>
-    )
+    render () {
+        return (
+            <button className="evalButton" onClick={() => {this.state.callback()}}>
+                <header>
+                    <link type="text/css" href="SettingsButton.css"/>
+                </header>
+                <div>
+                    <span className="evalButtonText">{this.state.title}</span>
+                </div>
+            </button>
+        );
+    }
+
 }
 
 export default SettingsButton
