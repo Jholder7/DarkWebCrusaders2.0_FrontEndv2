@@ -10,7 +10,9 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            stylisticErrors: "5"
+            stylisticErrors: "5",
+            improvements: "5",
+            estimatedGrades: "99%"
         }
         // Fix it flashing react app before changing
         document.title = 'Programtastic - App';
@@ -73,8 +75,8 @@ class App extends React.Component {
                             <div className="suggestions">
                                 <div className="suggestionsStats">
                                     <StatBox value={this.state.stylisticErrors} title="Stylistic Errors"/>
-                                    <StatBox value="5" title="Improvements"/>
-                                    <StatBox value="99%" title="Estimated Grade"/>
+                                    <StatBox value={this.state.improvements} title="Improvements"/>
+                                    <StatBox value={this.state.estimatedGrades} title="Estimated Grade"/>
                                 </div>
                                 <div className="suggestionCards">
                                     <SuggestionCard/>
