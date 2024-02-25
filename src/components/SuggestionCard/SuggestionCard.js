@@ -1,7 +1,5 @@
 import React from "react";
 import "./SuggestionCard.css"
-import RightArrow from "../../resources/RightArrow.svg"
-
 
 class SuggestionCard extends React.Component {
     constructor(props) {
@@ -19,10 +17,6 @@ class SuggestionCard extends React.Component {
                 <h3 className="cardTitle">Example Title</h3>
                 <div className="cardComparison">
                     <div className="cardComparisonBefore">
-
-                    </div>
-                    <img className="cardComparisonArrow" alt="Comparison arrow" src={RightArrow}/>
-                    <div className="cardComparisonAfter">
 
                     </div>
                 </div>

@@ -46,15 +46,7 @@
 .cardComparisonBefore {
     background: #282C34;
     height: 80px;
-    width: 80px;
-    border-radius: 5px;
-    margin-left: 10px;
-}
-
-.cardComparisonAfter {
-    background: #282C34;
-    height: 80px;
-    width: 80px;
+    width: 200px;
     border-radius: 5px;
     margin-left: 10px;
 }
