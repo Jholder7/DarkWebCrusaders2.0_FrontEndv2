@@ -1,0 +1,112 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Nunito', sans-serif;
+    color: #dbdbdb;
+}
+.body {
+    background: #171723;
+    height: 100vh;
+    width: 100vw;
+}
+.main {
+    background: #24273D;
+    width: 40%;
+    height: 100%;
+    min-width: 400px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.main > h2 {
+    font-weight: 700;
+    font-size: 50px;
+    margin-left: 10%;
+}
+.main > h3 {
+    font-weight: 300;
+    font-size: 15px;
+    margin-left: 10%;
+}
+.main > form > p {
+    font-weight: 300;
+    font-size: 14px;
+    margin-top: 5px;
+}
+footer {
+    position: fixed;
+    bottom: 4px;
+    font-weight: 100;
+    text-align: center;
+    width: 40%;
+    font-size: 12px;
+}
+form {
+    margin-left: 10%;
+    z-index: 2;
+}
+input {
+    width: 80%;
+    height: 40px;
+    padding-left: 5px;
+    border-radius: 10px;
+    background: #1E2133;
+    border: none;
+}
+input:focus {
+    outline: none;
+}
+label {
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+.inputfield {
+    border: double 2px transparent;
+    background-image: linear-gradient(#1E2133, #1E2133), linear-gradient(45deg, #ED4BFFFF, #4B4BFFFF);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+}
+.inputsubmit {
+    margin-top: 30%;
+    border: double 2px transparent;
+    background-image: linear-gradient(45deg, #85399E, #3B399E), linear-gradient(45deg, #ED4BFFFF, #4B4BFFFF);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    transition-duration: 100ms;
+    font-size: 16px;
+    font-weight: 600;
+}
+.inputsubmit:hover{
+    opacity: 70%;
+}
+.accentObject1 {
+    position: fixed;
+    background: #ED4BFFFF;
+    height: 140px;
+    width: 140px;
+    right: 60%;
+    bottom: 0;
+    border-radius: 100% 0 0 0;
+    z-index: 1;
+}
+.accentObject2 {
+    position: fixed;
+    background: #7e4bff;
+    height: 80px;
+    width: 80px;
+    right: 68%;
+    top: 10%;
+    border-radius: 100%;
+}
+.accentObject3 {
+    position: fixed;
+    background: #4B4BFFFF;
+    height: 30px;
+    width: 30px;
+    right: 68%;
+    top: 10%;
+    border-radius: 100%;
+}
