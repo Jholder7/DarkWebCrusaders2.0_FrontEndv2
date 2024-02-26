@@ -1,0 +1,57 @@
+.folder {
+    display: flex;
+    justify-content: center;
+    margin: 0 0 0 15px;
+    flex-direction: column;
+    font-size: 16px;
+}
+
+.folderName {
+    text-align: center;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    cursor: pointer;
+    height: 25px;
+    margin-right: 8px;
+}
+
+.folderName:hover {
+    background: var(--background-panel-darker);
+    transition: 200ms;
+    border-radius: 5px;
+}
+
+.fileName {
+    text-align: center;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    cursor: pointer;
+    height: 25px;
+    margin-right: 8px
+}
+
+.fileName:hover {
+    background: var(--background-panel-darker);
+    transition: 200ms;
+    border-radius: 5px;
+}
+
+.baseFolder {
+    margin: 5px 0 0 8px !important;
+}
+
+.file {
+    margin: 0 0 0 15px;
+}
+
+.icon {
+    height: 20px;
+    width: auto;
+    margin-right: 5px;
+    border-radius: 5px;
+    background: linear-gradient(45deg, rgba(237, 75, 255, 0.7), rgba(75, 75, 255, 0.7));
+}

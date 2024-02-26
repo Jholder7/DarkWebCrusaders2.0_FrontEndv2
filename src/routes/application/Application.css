@@ -121,6 +121,10 @@ nav {
     flex-direction: column;
 }
 
+.fileViewerPanel {
+    overflow: scroll;
+}
+
 /*Source Code Editor*/
 .sourceCodeEditorContainer {
     height: 100%;
