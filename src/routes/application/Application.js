@@ -5,6 +5,62 @@ import StatBox from "../../components/StatBox/StatBox";
 import React from 'react';
 import SettingsModal from "../../components/SettingsModal/SettingsModal";
 import SuggestionCard from "../../components/SuggestionCard/SuggestionCard";
+import FileExplorer from "../../components/FileExplorer/FileExplorer";
+
+let TestingFileStructure = {
+    "name": "SuperCoolProject",
+    "type": "baseFolder",
+    "items": [
+        {
+            "name": ".gitignore",
+            "type": "file",
+        },
+        {
+            "name": "index.html",
+            "type": "file",
+        },
+        {
+            "name": "components",
+            "type": "folder",
+            "items": [
+                {
+                    "name": "editor",
+                    "type": "folder",
+                    "items": [
+                        {
+                            "name": "Editor.js",
+                            "type": "file"
+                        },
+                        {
+                            "name": "Editor.css",
+                            "type": "file"
+                        }
+
+                    ]
+                },
+                {
+                    "name": "StatBox",
+                    "type": "folder",
+                    "items": [
+                        {
+                            "name": "StatBox.js",
+                            "type": "file"
+                        },
+                        {
+                            "name": "StatBox.css",
+                            "type": "file"
+                        }
+
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "main.java",
+            "type": "file",
+        },
+    ]
+}
 
 class Application extends React.Component {
     constructor(props) {
@@ -49,8 +105,8 @@ class Application extends React.Component {
                     <main>
                         <section className="fileViewerContainer">
                             <div className="fileViewer">
-                                <section className="panelBody">
-
+                                <section className="panelBody fileViewerPanel">
+                                    <FileExplorer filesData={TestingFileStructure} />
                                 </section>
                                 <div className="bottomPanelQuickInfo">
                                     <h4 className="bottomPanelQuickInfoStat ">SuperCoolProject</h4>
