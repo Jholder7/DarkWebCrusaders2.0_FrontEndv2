@@ -66,6 +66,7 @@ class Application extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            isLoading: true,
             stylisticErrors: "5",
             improvements: "5",
             estimatedGrades: "99%"
@@ -74,9 +75,23 @@ class Application extends React.Component {
         document.title = 'Programtastic - App';
     }
 
+    componentDidMount() {
+        // We can just pull all needed data and update out finish flash using the async finish function, the update this variable when we have all the data
+        // We sorta want the whole screen to load so that way we can inject the data as we receive it so its ready once done loading.
+        setTimeout(() => {this.setState({isLoading: false})}, 5000);
+    }
+
     render() {
         return (
             <div>
+                <div className={this.state.isLoading ? "showLoading" : "hideLoading"}>
+                    {/*This div covers the whole screen while isLoading any child components under here will be hidden when loading is done*/}
+                    {/*Add any loading animations, svgs, or gifs here and styler her up*/}
+                    <div className="spinner">
+                        <span>The Power of Programtastic. . .</span>
+                        <div className="half-spinner"></div>
+                    </div>
+                </div>
                 <SettingsModal/>
                 <header>
                     <link rel="preconnect" href="https://fonts.googleapis.com"/>
