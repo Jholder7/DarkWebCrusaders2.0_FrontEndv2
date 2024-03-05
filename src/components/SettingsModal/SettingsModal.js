@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import "./SettingsModal.css"
+import ColorTabs from "../Tabs/ColorTabs";
 
 class SettingsModal extends React.Component {
     constructor(props) {
@@ -33,6 +34,7 @@ class SettingsModal extends React.Component {
                             <div>Close</div>
                         </button>
                     </div>
+                    <ColorTabs />
                 </section>
             </div>
         )
