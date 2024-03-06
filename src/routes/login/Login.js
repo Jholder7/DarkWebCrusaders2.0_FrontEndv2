@@ -2,6 +2,29 @@ import React from "react";
 import "./Login.css"
 
 class Login extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            active: "login",
+            firstName: "",
+            lastName: "",
+            login: "",
+            password: "",
+            onLogin: props.onLogin,
+        };
+    }
+
+    onChangeHandler = (e) => {
+        let name = e.target.name;
+        let value = e.target.value;
+        this.setState({[name]: value});
+    }
+
+    onSubmitLogin = (e) => {
+        console.log(e, this.state.login, this.state.password)
+        this.state.onLogin(e, this.state.login, this.state.password);
+    }
+
     render() {
         return (
             <div>
@@ -18,14 +41,14 @@ class Login extends React.Component {
                     <main className="main">
                         <h2>Login</h2>
                         <h3>Unlock the power of Programtastic and get to typing!</h3>
-                        <form>
-                            <label htmlFor="user">Username or Email</label>
+                        <form onSubmit={this.onSubmitLogin}>
+                            <label htmlFor="loginName">Username or Email</label>
                             <br />
-                            <input className="inputfield" type="text" id="user" name="user" placeholder="Username or Email" />
+                            <input className="inputfield" type="text" id="loginName" name="login" placeholder="Username or Email" onChange={this.onChangeHandler}/>
                             <br />
-                            <label htmlFor="pass">Password</label>
+                            <label htmlFor="loginPassword">Password</label>
                             <br />
-                            <input className="inputfield" type="password" id="pass" name="pass" placeholder="Password" />
+                            <input className="inputfield" type="password" id="loginPassword" name="password" placeholder="Password" onChange={this.onChangeHandler}/>
                             <p><a href="./recovery">Forget Password?</a></p>
                             <br />
                             <input className="inputsubmit" type="submit" id="submit" value="Login" />
@@ -39,7 +62,6 @@ class Login extends React.Component {
                         </footer>
                     </main>
                     <section>
-
                     </section>
                 </div>
             </div>
