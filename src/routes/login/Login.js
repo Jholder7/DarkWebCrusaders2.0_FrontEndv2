@@ -11,7 +11,6 @@ class Login extends React.Component {
             lastName: "",
             username: "",
             password: "",
-            onUpdateShownPage: props.onUpdateShownPage,
         };
     }
 
@@ -27,7 +26,7 @@ class Login extends React.Component {
         ).then((response) => {
             console.log(e, this.state.username, this.state.password)
             setAuthToken(response.data.token);
-            this.state.onUpdateShownPage("application")
+            window.location.replace("/application");
         }).catch((error) => {
             //Debug data should change later!
             // Display the actual issue such as invalid username of password on webpage

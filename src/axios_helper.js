@@ -20,9 +20,11 @@ export const request = (method, url, data) => {
 
     let headers = {};
 
-    if (getAuthToken() !== null && getAuthToken() !== "null" && "/api/v1/register" !== url) {
+    if (getAuthToken() !== null && getAuthToken() !== "null" && "/api/v1/register" !== url && "/api/v1/login" !== url) {
         headers = {'Authorization': `Bearer ${getAuthToken()}`};
     }
+
+    // TODO: handle is no login token is found, cancel the request and forward to login page;
 
     return axios({
         method: method,

@@ -12,7 +12,6 @@ class Register extends React.Component {
             username: "",
             email: "",
             password: "",
-            onUpdateShownPage: props.onUpdateShownPage,
         };
     }
 
@@ -29,9 +28,9 @@ class Register extends React.Component {
                 password: this.state.password
             }
         ).then((response) => {
-            console.log(e, this.state.username, this.state.password)
+            console.log(e, this.state.username, this.state.password);
             setAuthToken(response.data.token);
-            this.state.onUpdateShownPage("authContent")
+            window.location.replace("/needsAuth");
         }).catch((error) => {
             //Debug data should change later!
             // Display the actual issue such as user already exist on the webpage
