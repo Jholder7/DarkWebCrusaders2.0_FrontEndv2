@@ -1,5 +1,6 @@
 import React from "react";
 import "./Register.css"
+import {request, setAuthToken} from "../../axios_helper";
 
 class Register extends React.Component {
     constructor(props) {
@@ -8,10 +9,34 @@ class Register extends React.Component {
             active: "login",
             firstName: "",
             lastName: "",
-            login: "",
+            username: "",
+            email: "",
             password: "",
-            onRegister: props.onRegister
+            onUpdateShownPage: props.onUpdateShownPage,
         };
+    }
+
+    onRegister = (e) => {
+        e.preventDefault();
+        request(
+            "POST",
+            "/api/v1/register",
+            {
+                firstName: this.state.firstName,
+                lastName: this.state.lastName,
+                username: this.state.username,
+                email: this.state.email,
+                password: this.state.password
+            }
+        ).then((response) => {
+            console.log(e, this.state.username, this.state.password)
+            setAuthToken(response.data.token);
+            this.state.onUpdateShownPage("authContent")
+        }).catch((error) => {
+            //Debug data should change later!
+            // Display the actual issue such as user already exist on the webpage
+            console.log(error, this.state.username, this.state.password)
+        });
     }
 
     onChangeHandler = (e) => {
@@ -20,21 +45,6 @@ class Register extends React.Component {
         this.setState({[name]: value});
     }
 
-    onSubmitRegister = (e) => {
-        console.log(e,
-            this.state.firstName,
-            this.state.lastName,
-            this.state.login,
-            this.state.password
-        );
-        this.state.onRegister(
-            e,
-            this.state.firstName,
-            this.state.lastName,
-            this.state.login,
-            this.state.password
-        );
-    }
     render () {
         return (
             <div>
@@ -49,7 +59,7 @@ class Register extends React.Component {
                     <div className="main">
                         <h2>Create Account</h2>
                         <h3>Almost there, fill in the information below and you'll be programming with Programtastic!</h3>
-                        <form onSubmit={this.onSubmitRegister}>
+                        <form onSubmit={this.onRegister}>
                             <label htmlFor="firstname lastname">Full Name</label>
                             <br/>
                             <div className="inputstack">
@@ -58,7 +68,7 @@ class Register extends React.Component {
                             </div>
                             <label htmlFor="uername">Username</label>
                             <br/>
-                            <input className="inputfield" type="text" id="username" name="login" placeholder="Username" onChange={this.onChangeHandler}/>
+                            <input className="inputfield" type="text" id="username" name="username" placeholder="Username" onChange={this.onChangeHandler}/>
                             <br/>
                             <label htmlFor="email">Email</label>
                             <br/>

@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import {
-    BrowserRouter as Router,
-    Routes,
-    Route,
-    Link
-} from "react-router-dom";
+// Rework router later once I get the change but for now module swapping works fine. - Justin
+// import {
+//     BrowserRouter as Router,
+//     Routes,
+//     Route,
+//     Link
+// } from "react-router-dom";
 import "./App.css";
 
 // Import pages from ./routes
@@ -13,7 +14,6 @@ import Login from "./routes/login/Login";
 import Register from "./routes/register/Register";
 import Recovery from "./routes/recovery/Recovery";
 import AuthContent from "./components/AuthContent/AuthContent";
-import {request, setAuthToken} from "./axios_helper";
 
 class App extends Component {
     constructor(props) {
@@ -23,40 +23,11 @@ class App extends Component {
         }
     }
 
-    onLogin = (e, username, password) => {
-        e.preventDefault();
-        request(
-            "POST",
-            "/login",
-            {
-                login: username,
-                password: password
-            }
-        ).then((response) => {
-            this.setState({pageToShow: "authContent"})
-            setAuthToken(response.data.token);
-        }).catch((error) => {
-            this.setState({pageToShow: "base"})
-        });
-    }
-
-    onRegister = (e, firstName, lastName, username, password) => {
-        e.preventDefault();
-        request(
-            "POST",
-            "/register",
-            {
-                firstName: firstName,
-                lastName: lastName,
-                login: username,
-                password: password
-            }
-        ).then((response) => {
-            this.setState({pageToShow: "authContent"})
-            setAuthToken(response.data.token);
-        }).catch((error) => {
-            this.setState({pageToShow: "base"})
-        });
+    onUpdateShownPage = (pageName) => {
+        // This check is to confirm we don't get invalid page state issues.
+        if (["application", "login", "register", "recovery", "authContent"].find((el) => el === pageName)) {
+            this.setState({pageToShow: pageName})
+        }
     }
 
     login = () => {
@@ -81,11 +52,12 @@ class App extends Component {
                         }}>Register
                         </button>
                     </div>}
+                    {/* Make sure to add page to page transition check in this.onUpdateShownPage()*/}
                     {this.state.pageToShow === "application" && <Application/> }
-                    {this.state.pageToShow === "login" && <Login onLogin={this.onLogin} /> }
-                    {this.state.pageToShow === "register" && <Register onRegister={this.onRegister} />}
+                    {this.state.pageToShow === "login" && <Login onUpdateShownPage={this.onUpdateShownPage} /> }
+                    {this.state.pageToShow === "register" && <Register onUpdateShownPage={this.onUpdateShownPage} />}
                     {this.state.pageToShow === "recovery" && <Recovery/> }
-                    {this.state.pageToShow === "authContent" && <AuthContent/> }
+                    {this.state.pageToShow === "authContent" && <AuthContent/> /* <- This is an example page for debugging / testing*/}
                 </div>
             </div>
         );

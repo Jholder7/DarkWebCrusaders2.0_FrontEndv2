@@ -1,5 +1,6 @@
 import React from "react";
 import "./Login.css"
+import {request, setAuthToken} from "../../axios_helper";
 
 class Login extends React.Component {
     constructor(props) {
@@ -8,21 +9,36 @@ class Login extends React.Component {
             active: "login",
             firstName: "",
             lastName: "",
-            login: "",
+            username: "",
             password: "",
-            onLogin: props.onLogin,
+            onUpdateShownPage: props.onUpdateShownPage,
         };
+    }
+
+    onLogin = (e) => {
+        e.preventDefault();
+        request(
+            "POST",
+            "api/v1/login",
+            {
+                username: this.state.username,
+                password: this.state.password
+            }
+        ).then((response) => {
+            console.log(e, this.state.username, this.state.password)
+            setAuthToken(response.data.token);
+            this.state.onUpdateShownPage("application")
+        }).catch((error) => {
+            //Debug data should change later!
+            // Display the actual issue such as invalid username of password on webpage
+            console.log(error, this.state.username, this.state.password)
+        });
     }
 
     onChangeHandler = (e) => {
         let name = e.target.name;
         let value = e.target.value;
         this.setState({[name]: value});
-    }
-
-    onSubmitLogin = (e) => {
-        console.log(e, this.state.login, this.state.password)
-        this.state.onLogin(e, this.state.login, this.state.password);
     }
 
     render() {
@@ -41,10 +57,10 @@ class Login extends React.Component {
                     <main className="main">
                         <h2>Login</h2>
                         <h3>Unlock the power of Programtastic and get to typing!</h3>
-                        <form onSubmit={this.onSubmitLogin}>
+                        <form onSubmit={this.onLogin}>
                             <label htmlFor="loginName">Username or Email</label>
                             <br />
-                            <input className="inputfield" type="text" id="loginName" name="login" placeholder="Username or Email" onChange={this.onChangeHandler}/>
+                            <input className="inputfield" type="text" id="loginName" name="username" placeholder="Username or Email" onChange={this.onChangeHandler}/>
                             <br />
                             <label htmlFor="loginPassword">Password</label>
                             <br />
