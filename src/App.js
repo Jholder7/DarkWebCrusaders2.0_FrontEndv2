@@ -33,7 +33,7 @@ class App extends Component {
                 password: password
             }
         ).then((response) => {
-            this.setState({pageToShow: "needsauth"})
+            this.setState({pageToShow: "authContent"})
             setAuthToken(response.data.token);
         }).catch((error) => {
             this.setState({pageToShow: "base"})
@@ -73,7 +73,13 @@ class App extends Component {
                 <div className="App">
                     {this.state.pageToShow === "base" && <div style={{"color": "black"}}>
                         Base Page Needs designing
-                        <button onClick={() => {this.register()}} >Login</button>
+                        <button onClick={() => {
+                            this.login()
+                        }}>Login</button>
+                        <button onClick={() => {
+                            this.register()
+                        }}>Register
+                        </button>
                     </div>}
                     {this.state.pageToShow === "application" && <Application/> }
                     {this.state.pageToShow === "login" && <Login onLogin={this.onLogin} /> }
