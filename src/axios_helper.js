@@ -20,7 +20,7 @@ export const request = (method, url, data) => {
 
     let headers = {};
 
-    if (getAuthToken() !== null && getAuthToken() !== "null" && "/api/v1/register" !== url) {
+    if (getAuthToken() !== null && getAuthToken() !== "null" && "/api/v1/register" !== url && "/api/v1/login" !== url) {
         headers = {'Authorization': `Bearer ${getAuthToken()}`};
     }
 
@@ -28,5 +28,12 @@ export const request = (method, url, data) => {
         method: method,
         url: url,
         headers: headers,
-        data: data});
+        data: data})
 };
+
+export const tokenErrorHandler = (e) => {
+    if (e.response && e.response.status === 401) {
+        setAuthToken(null);
+        window.location.replace("/login");
+    }
+}

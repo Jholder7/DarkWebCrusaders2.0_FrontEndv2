@@ -4,7 +4,7 @@
 // to implemented authentication foa component
 
 import React from "react";
-import { request } from '../../axios_helper';
+import { request, tokenErrorHandler } from '../../axios_helper';
 
 export default class AuthContent extends React.Component {
     constructor(props) {
@@ -22,7 +22,9 @@ export default class AuthContent extends React.Component {
         ).then((response) => {
             this.setState({data: response.data});
             console.log(response.data);
-        });
+        }).catch ((e) => {
+            tokenErrorHandler(e);
+        })
     }
 
     render() {
