@@ -33,12 +33,12 @@ export default function ColorTabs() {
                 <Tab value="seven" label="Object C Options" />
             </Tabs>
             <TabPanel value="one"><TabCards /></TabPanel>
-            <TabPanel value="two">Item two</TabPanel>
-            <TabPanel value="three">Item three</TabPanel>
-            <TabPanel value="four">Item four</TabPanel>
-            <TabPanel value="five">Item five</TabPanel>
-            <TabPanel value="six">Item six</TabPanel>
-            <TabPanel value="seven">Item seven</TabPanel>
+            <TabPanel value="two"><TabCards /></TabPanel>
+            <TabPanel value="three"><TabCards /></TabPanel>
+            <TabPanel value="four"><TabCards /></TabPanel>
+            <TabPanel value="five"><TabCards /></TabPanel>
+            <TabPanel value="six"><TabCards /></TabPanel>
+            <TabPanel value="seven"><TabCards /></TabPanel>
       </TabContext>
     </Box>
   );

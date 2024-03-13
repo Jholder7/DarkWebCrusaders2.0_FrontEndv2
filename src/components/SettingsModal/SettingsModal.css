@@ -111,3 +111,7 @@
     position: absolute;
     margin-top: 33px;
 }
+
+.topBarHeader {
+    padding-left: 15px;
+}
