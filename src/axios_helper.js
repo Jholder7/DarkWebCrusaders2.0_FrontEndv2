@@ -24,11 +24,16 @@ export const request = (method, url, data) => {
         headers = {'Authorization': `Bearer ${getAuthToken()}`};
     }
 
-    // TODO: handle is no login token is found, cancel the request and forward to login page;
-
     return axios({
         method: method,
         url: url,
         headers: headers,
-        data: data});
+        data: data})
 };
+
+export const tokenErrorHandler = (e) => {
+    if (e.response && e.response.status === 401) {
+        setAuthToken(null);
+        window.location.replace("/login");
+    }
+}
