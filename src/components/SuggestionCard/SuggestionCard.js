@@ -14,10 +14,13 @@ class SuggestionCard extends React.Component {
                     <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true"/>
                     <link type="text/css" href="SuggestionCard.css"/>
                 </header>
-                <h3 className="cardTitle">Example Title</h3>
+                <h3 className="cardTitle">{this.props.title}</h3>
                 <div className="cardComparison">
                     <div className="cardComparisonBefore">
-
+                        {this.props.correction}
+                    </div>
+                    <div className="cardMessage">
+                        {this.props.message}
                     </div>
                 </div>
             </div>

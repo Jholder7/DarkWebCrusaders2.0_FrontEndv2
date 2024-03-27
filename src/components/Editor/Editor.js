@@ -4,18 +4,55 @@ import "./Editor.css"
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-one_dark";
 import "ace-builds/src-noconflict/ext-language_tools";
+import {request, tokenErrorHandler} from "../../axios_helper";
 
 class Editor extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             editorText: "",
-            markers: []
+            markers: [],
+            container: this.props.container
         };
+        this.oldValue = null;
+        this.timer = null;
     }
 
-    onChange = () => {
-        console.log("changed")
+    onChange = (newValue) => {
+        this.setState({editorText: newValue});
+        this.state.container.setState({lineCount: newValue.split('\n').length});
+        this.state.container.setState({status: "Waiting..."})
+        if (this.timer == null) {
+            this.timer = setTimeout(() =>{this.executeEval(newValue); this.state.container.setState({status: "Computing..."})}, 1000);
+        } else {
+            clearTimeout(this.timer)
+            this.timer = setTimeout(() =>{this.executeEval(newValue); this.state.container.setState({status: "Computing..."})}, 1000);
+        }
+    }
+
+    //This should be moved into editor, so we can have multiple instance, on error creation we just call out to application.
+    // This will make our work easier when handling multiple files
+    executeEval(sourceCode) {
+        request(
+            "POST",
+            "/api/v1/application/evalFile",
+            {
+                fileTitle: "TestFileName.js",
+                fileContents: sourceCode.replaceAll("\r", "").replaceAll("\"", "\u0022"),
+                settings: ["3Allman"]
+            }
+        ).then((response) => {
+            console.log(response.data);
+            for(let i = 0; i < response.data.styleErrors; i++) {
+                console.log("beep");
+                this.state.container.createNewSuggestionCard("Issue (generate titles later)", response.data.issueSegmentLiterals[i].segmentLiteralData[1], [], [])
+            }
+        }).then(() =>
+            this.state.container.setState({status: "Complete"})
+        ).catch((e) => {
+            console.log(e);
+            tokenErrorHandler(e);
+        })
     }
 
     render() {

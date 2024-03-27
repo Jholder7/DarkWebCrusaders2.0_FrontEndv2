@@ -49,6 +49,15 @@
     width: 200px;
     border-radius: 5px;
     margin-left: 10px;
+    overflow: auto;
+}
+
+.cardMessage {
+    width: 250px;
+    height: 80px;
+    margin: 0 10px 0 10px;
+    text-wrap: normal;
+    overflow-x: auto;
 }
 
 .cardComparisonArrow {

@@ -68,16 +68,21 @@ class Application extends React.Component {
         super(props);
         this.state = {
             isLoading: true,
-            stylisticErrors: "5",
-            improvements: "5",
-            estimatedGrades: "99%",
-            username: ""
+            stylisticErrors: 0,
+            improvements: 0,
+            estimatedGrades: "100%",
+            username: "",
+            suggestions: [],
+            lineCount: 1,
+            processTime: 0,
+            status: "Waiting..."
         }
         // Fix it flashing react app before changing
         document.title = 'Programtastic - App';
+        this.timer = null;
     }
 
-    componentDidMount() {
+    componentDidMount = () => {
         // We can just pull all needed data and update out finish flash using the async finish function, the update this variable when we have all the data
         // We sorta want the whole screen to load so that way we can inject the data as we receive it so its ready once done loading.
         setTimeout(() => {this.setState({isLoading: false})}, 5000);
@@ -92,6 +97,12 @@ class Application extends React.Component {
             console.log(e);
             tokenErrorHandler(e);
         })
+    }
+
+    createNewSuggestionCard(title, correction, message, startIndex, endIndex){
+        this.setState(prevState => ({suggestions: prevState.suggestions.filter(suggestion => suggestion.startIndex !== startIndex && suggestion.endIndex !== endIndex)}));
+        this.setState(prevState => ({suggestions: [...prevState.suggestions, {title: title, correction: correction, message: message, startIndex: startIndex, endIndex: endIndex}]}));
+        this.setState({stylisticErrors: this.state.suggestions.length});
     }
 
     render() {
@@ -144,14 +155,14 @@ class Application extends React.Component {
                         <section className="sourceCodeEditorContainer">
                             <div className="sourceCodeEditor">
                                 <section className="panelBody">
-                                    <Editor/>
+                                    <Editor container={this}/>
                                 </section>
                                 <div className="bottomPanelQuickInfo">
                                     <h4 className="bottomPanelQuickInfoStat ">src/folder/sourceFile.txt</h4>
-                                    <h4 className="bottomPanelRightAlign bottomPanelQuickInfoStat bottomPanelQuickInfoPad">Waiting...</h4>
-                                    <h4 className="bottomPanelQuickInfoStat bottomPanelQuickInfoPad">0ms</h4>
+                                    <h4 className="bottomPanelRightAlign bottomPanelQuickInfoStat bottomPanelQuickInfoPad">{this.state.status}</h4>
+                                    <h4 className="bottomPanelQuickInfoStat bottomPanelQuickInfoPad">{this.state.processTime}ms</h4>
                                     <h4 className="bottomPanelQuickInfoStat bottomPanelQuickInfoPad">UTF-8</h4>
-                                    <h4 className="bottomPanelQuickInfoStat bottomPanelQuickInfoPad">0 Lines</h4>
+                                    <h4 className="bottomPanelQuickInfoStat bottomPanelQuickInfoPad">{this.state.lineCount} Lines</h4>
                                 </div>
                             </div>
                         </section>
@@ -163,12 +174,7 @@ class Application extends React.Component {
                                     <StatBox value={this.state.estimatedGrades} title="Estimated Grade"/>
                                 </div>
                                 <div className="suggestionCards">
-                                    <SuggestionCard/>
-                                    <SuggestionCard/>
-                                    <SuggestionCard/>
-                                    <SuggestionCard/>
-                                    <SuggestionCard/>
-                                    <SuggestionCard/>
+                                    {this.state.suggestions.map(suggestion => <SuggestionCard title={suggestion.title} correction={suggestion.correction} message={suggestion.message}/>)}
                                 </div>
                                 <div className="suggestionSettingsSection">
                                     <SettingsButton title="Evaluation Settings" callback={() => {
