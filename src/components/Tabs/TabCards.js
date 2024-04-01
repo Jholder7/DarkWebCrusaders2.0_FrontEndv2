@@ -15,17 +15,17 @@ class SuggestionCard extends React.Component {
                     <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true"/>
                     <link type="text/css" href="SuggestionCard.css"/>
                 </header>
-                <h3 className="cardTitle">Example Title</h3>
+                <h3 className="cardTitle">{this.props.title}</h3>
                 <div className="switchButton">
                     <Switch defaultChecked color="secondary"/>
                 </div>
                 <div className="cardImage">
-                    <div className="cardImageBefore">
-
+                    <div >
+                        <img src={this.props.img} className="cardImageBefore" ></img>
                     </div>
                 </div>
                 <div className="cardLanguages">
-                    <h3>Languages: </h3>
+                    <h3>Languages: Java, C# </h3>
                 </div>
             </div>
         );

@@ -3,6 +3,7 @@ import "./FileExplorer.css"
 import fileIcon from "./resources/file.svg"
 import folder from "./resources/folder.svg"
 import folderOpen from "./resources/folderOpen.svg"
+import { Resizable, ResizableBox } from "react-resizable";
 
 class FileExplorer extends React.Component {
     constructor(props) {
@@ -29,6 +30,7 @@ class FileExplorer extends React.Component {
                     <h3 className="fileName"><img className="icon" src={fileIcon}
                                                   alt="fileIcon"/>{this.state.filesData.name}</h3>
                 </div>
+                
             );
         }
 

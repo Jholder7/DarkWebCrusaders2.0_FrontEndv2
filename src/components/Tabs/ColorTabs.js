@@ -6,6 +6,7 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import TabCards from './TabCards'
+import javaBraceStyle from '../images/javaBraceStyle.png'
 
 export default function ColorTabs() {
   const [value, setValue] = React.useState('one');
@@ -32,13 +33,41 @@ export default function ColorTabs() {
                 <Tab value="six" label="Padding Options" />
                 <Tab value="seven" label="Object C Options" />
             </Tabs>
-            <TabPanel value="one"><TabCards /></TabPanel>
-            <TabPanel value="two"><TabCards /></TabPanel>
-            <TabPanel value="three"><TabCards /></TabPanel>
-            <TabPanel value="four"><TabCards /></TabPanel>
-            <TabPanel value="five"><TabCards /></TabPanel>
-            <TabPanel value="six"><TabCards /></TabPanel>
-            <TabPanel value="seven"><TabCards /></TabPanel>
+            <TabPanel value="one" >
+              <TabCards 
+              title="Java"
+              img={javaBraceStyle}
+              />
+              <TabCards 
+              title="Java"
+              img={javaBraceStyle}
+              />
+            </TabPanel>
+            <TabPanel value="two">
+              <TabCards 
+              title="Java"
+              />
+            </TabPanel>
+            <TabPanel value="three">
+              <TabCards  
+              title="Java"/>
+            </TabPanel>
+            <TabPanel value="four">
+              <TabCards  
+              title="Java"/>
+            </TabPanel>
+            <TabPanel value="five">
+              <TabCards  
+              title="Java"/>
+            </TabPanel>
+            <TabPanel value="six">
+              <TabCards  
+              title="Java"/>
+            </TabPanel>
+            <TabPanel value="seven">
+              <TabCards  
+              title="Java"/>
+            </TabPanel>
       </TabContext>
     </Box>
   );
