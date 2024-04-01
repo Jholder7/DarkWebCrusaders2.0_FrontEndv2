@@ -75,11 +75,14 @@ class Application extends React.Component {
             suggestions: [],
             lineCount: 1,
             processTime: 0,
-            status: "Waiting..."
+            status: "Waiting...",
+            focusedSuggestionID: null
         }
         // Fix it flashing react app before changing
         document.title = 'Programtastic - App';
+        document.appContext = this;
         this.timer = null;
+        this.editor = null;
     }
 
     componentDidMount = () => {
@@ -99,10 +102,19 @@ class Application extends React.Component {
         })
     }
 
-    createNewSuggestionCard(title, correction, message, startIndex, endIndex){
-        this.setState(prevState => ({suggestions: prevState.suggestions.filter(suggestion => suggestion.startIndex !== startIndex && suggestion.endIndex !== endIndex)}));
-        this.setState(prevState => ({suggestions: [...prevState.suggestions, {title: title, correction: correction, message: message, startIndex: startIndex, endIndex: endIndex}]}));
-        this.setState({stylisticErrors: this.state.suggestions.length});
+    createNewSuggestionCard(id, title, correction, message, startIndex, endIndex){
+        this.setState(prevState => ({suggestions: [...prevState.suggestions, {id: id, title: title, correction: correction, message: message, startIndex: startIndex, endIndex: endIndex, focused: false}]}));
+        this.setState({improvements: 0});
+        this.setState({estimatedGrade: "100%"});
+        this.setState(prevState => ({stylisticErrors: prevState.stylisticErrors + 1}));
+    }
+
+    clearSuggestionCard(){
+        //We clear card and data because we will only show info for the currently open file
+        this.setState({stylisticErrors: 0});
+        this.setState({suggestions: []});
+        this.setState({improvements: 0});
+        this.setState({estimatedGrade: "100%"})
     }
 
     render() {
@@ -155,7 +167,7 @@ class Application extends React.Component {
                         <section className="sourceCodeEditorContainer">
                             <div className="sourceCodeEditor">
                                 <section className="panelBody">
-                                    <Editor container={this}/>
+                                    <Editor/>
                                 </section>
                                 <div className="bottomPanelQuickInfo">
                                     <h4 className="bottomPanelQuickInfoStat ">src/folder/sourceFile.txt</h4>
@@ -174,7 +186,7 @@ class Application extends React.Component {
                                     <StatBox value={this.state.estimatedGrades} title="Estimated Grade"/>
                                 </div>
                                 <div className="suggestionCards">
-                                    {this.state.suggestions.map(suggestion => <SuggestionCard title={suggestion.title} correction={suggestion.correction} message={suggestion.message}/>)}
+                                    {this.state.suggestions.map(suggestion => <SuggestionCard id={suggestion.id} title={suggestion.title} correction={suggestion.correction} message={suggestion.message}/>)}
                                 </div>
                                 <div className="suggestionSettingsSection">
                                     <SettingsButton title="Evaluation Settings" callback={() => {

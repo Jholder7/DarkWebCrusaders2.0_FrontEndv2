@@ -12,10 +12,10 @@ class Editor extends React.Component {
         this.state = {
             editorText: "",
             markers: [],
-            container: this.props.container
+            container: document.appContext,
         };
-        this.oldValue = null;
         this.timer = null;
+        this.state.container.editor = this;
     }
 
     onChange = (newValue) => {
@@ -30,8 +30,22 @@ class Editor extends React.Component {
         }
     }
 
-    //This should be moved into editor, so we can have multiple instance, on error creation we just call out to application.
-    // This will make our work easier when handling multiple files
+    createMarker = (id, row, column, row1, column1) => {
+        this.setState(prevState => ({markers: [...prevState.markers, {id: id, startRow: row, startCol: column, endRow: row1, endCol: column1, className: 'textHighlight', type: 'text' }]}));
+    }
+
+    setActiveMarker = (id) => {
+        let tempMarkers = this.state.markers
+        this.setState({markers: []});
+        tempMarkers.forEach(marker => {
+            if (marker.id===id){
+                this.setState(prevState => ({markers: [...prevState.markers, {id: marker.id, startRow: marker.startRow, startCol: marker.startCol, endRow: marker.endRow, endCol: marker.endCol, className: 'activeTextHighlight', type: 'text' }]}));
+            } else {
+                this.setState(prevState => ({markers: [...prevState.markers, {id: marker.id, startRow: marker.startRow, startCol: marker.startCol, endRow: marker.endRow, endCol: marker.endCol, className: 'textHighlight', type: 'text' }]}));
+            }
+        });
+    }
+
     executeEval(sourceCode) {
         request(
             "POST",
@@ -43,10 +57,24 @@ class Editor extends React.Component {
             }
         ).then((response) => {
             console.log(response.data);
+            this.state.container.clearSuggestionCard();
+            this.markerID = 0;
+            this.setState({markers: []});
             for(let i = 0; i < response.data.styleErrors; i++) {
-                console.log("beep");
-                this.state.container.createNewSuggestionCard("Issue (generate titles later)", response.data.issueSegmentLiterals[i].segmentLiteralData[1], [], [])
+                this.state.container.createNewSuggestionCard(i,"Issue (generate titles later)", response.data.issueSegmentLiterals[i].segmentLiteralData[1], "generate msg later", [], [])
+                this.setState()
+
             }
+            let rollingID = 0
+            response.data.issueSegments.forEach((segment) => {
+                let source = this.state.editorText.replaceAll("\r", "").replaceAll("\"", "\u0022")
+                let x = source.slice(0, segment.segmentData[0]).split("\n").length-1;
+                let y = source.slice(0, segment.segmentData[0]).split("\n").slice(-1)[0].length;
+                let x1 = source.slice(0, segment.segmentData[1]).split("\n").length-1;
+                let y1 = source.slice(0, segment.segmentData[1]).split("\n").slice(-1)[0].length;
+                this.createMarker(rollingID, x, y, x1, y1+1);
+                rollingID++;
+            });
         }).then(() =>
             this.state.container.setState({status: "Complete"})
         ).catch((e) => {

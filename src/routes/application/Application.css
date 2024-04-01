@@ -266,8 +266,19 @@ nav {
 .completed {
     font-size: 2rem;
     color: #03fc4e;
-
     animation: bigger 1s linear;
+}
+
+.textHighlight {
+    background: rgba(255, 0, 0, 0.56);
+    position: absolute;
+    height: 2px !important;
+    margin-top: 16px;
+}
+
+.activeTextHighlight {
+    background: rgba(255, 0, 0, 0.56);
+    position: absolute;
 }
 
 @keyframes bigger {
