@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import "./SettingsModal.css"
+import ColorTabs from "../Tabs/ColorTabs";
 
 class SettingsModal extends React.Component {
     constructor(props) {
@@ -27,12 +28,14 @@ class SettingsModal extends React.Component {
                 </header>
                 <section className="settingsPanel">
                     <div className="topBar">
+                        <h3 className="topBarHeader">Style Options</h3>
                         <button className="closeModal" onClick={() => {
                             this.setDisplay(false)
                         }}>
                             <div>Close</div>
                         </button>
                     </div>
+                    <ColorTabs />
                 </section>
             </div>
         )

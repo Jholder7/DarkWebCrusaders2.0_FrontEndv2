@@ -6,6 +6,7 @@ import React from 'react';
 import SettingsModal from "../../components/SettingsModal/SettingsModal";
 import SuggestionCard from "../../components/SuggestionCard/SuggestionCard";
 import FileExplorer from "../../components/FileExplorer/FileExplorer";
+import Toggle from "../../components/ToggleShowAndHide/Toggle";
 import {request, tokenErrorHandler} from "../../axios_helper";
 
 let TestingFileStructure = {
@@ -144,7 +145,9 @@ class Application extends React.Component {
                         <section className="sourceCodeEditorContainer">
                             <div className="sourceCodeEditor">
                                 <section className="panelBody">
-                                    <Editor/>
+                                    <div className="fillSpace">
+                                        <Editor/>
+                                    </div>      
                                 </section>
                                 <div className="bottomPanelQuickInfo">
                                     <h4 className="bottomPanelQuickInfoStat ">src/folder/sourceFile.txt</h4>
@@ -156,26 +159,28 @@ class Application extends React.Component {
                             </div>
                         </section>
                         <section className="suggestionsViewerContainer">
-                            <div className="suggestions">
-                                <div className="suggestionsStats">
-                                    <StatBox value={this.state.stylisticErrors} title="Stylistic Errors"/>
-                                    <StatBox value={this.state.improvements} title="Improvements"/>
-                                    <StatBox value={this.state.estimatedGrades} title="Estimated Grade"/>
+                            <Toggle>
+                                <div className="suggestions">
+                                    <div className="suggestionsStats">
+                                        <StatBox value={this.state.stylisticErrors} title="Stylistic Errors"/>
+                                        <StatBox value={this.state.improvements} title="Improvements"/>
+                                        <StatBox value={this.state.estimatedGrades} title="Estimated Grade"/>
+                                    </div>
+                                    <div className="suggestionCards">
+                                        <SuggestionCard/>
+                                        <SuggestionCard/>
+                                        <SuggestionCard/>
+                                        <SuggestionCard/>
+                                        <SuggestionCard/>
+                                        <SuggestionCard/>
+                                    </div>
+                                    <div className="suggestionSettingsSection">
+                                        <SettingsButton title="Evaluation Settings" callback={() => {
+                                            window.settingsModal.setDisplay(true);
+                                        }}/>
+                                    </div>
                                 </div>
-                                <div className="suggestionCards">
-                                    <SuggestionCard/>
-                                    <SuggestionCard/>
-                                    <SuggestionCard/>
-                                    <SuggestionCard/>
-                                    <SuggestionCard/>
-                                    <SuggestionCard/>
-                                </div>
-                                <div className="suggestionSettingsSection">
-                                    <SettingsButton title="Evaluation Settings" callback={() => {
-                                        window.settingsModal.setDisplay(true);
-                                    }}/>
-                                </div>
-                            </div>
+                                </Toggle>
                         </section>
                     </main>
                 </div>

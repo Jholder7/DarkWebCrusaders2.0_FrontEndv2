@@ -17,10 +17,8 @@
 
 .settingsPanel {
     background: var(--background-panel);
-    width: 65%;
+    width: 1153px;
     height: 60%;
-    min-width: 800px;
-    min-height: 500px;
     position: relative;
     border-radius: 5px;
 }
@@ -112,4 +110,8 @@
     height: 2px;
     position: absolute;
     margin-top: 33px;
+}
+
+.topBarHeader {
+    padding-left: 15px;
 }
