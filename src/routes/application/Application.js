@@ -7,6 +7,7 @@ import SettingsModal from "../../components/SettingsModal/SettingsModal";
 import SuggestionCard from "../../components/SuggestionCard/SuggestionCard";
 import FileExplorer from "../../components/FileExplorer/FileExplorer";
 import Toggle from "../../components/ToggleShowAndHide/Toggle";
+import {request, tokenErrorHandler} from "../../axios_helper";
 
 let TestingFileStructure = {
     "name": "SuperCoolProject",
@@ -70,7 +71,8 @@ class Application extends React.Component {
             isLoading: true,
             stylisticErrors: "5",
             improvements: "5",
-            estimatedGrades: "99%"
+            estimatedGrades: "99%",
+            username: ""
         }
         // Fix it flashing react app before changing
         document.title = 'Programtastic - App';
@@ -80,6 +82,17 @@ class Application extends React.Component {
         // We can just pull all needed data and update out finish flash using the async finish function, the update this variable when we have all the data
         // We sorta want the whole screen to load so that way we can inject the data as we receive it so its ready once done loading.
         setTimeout(() => {this.setState({isLoading: false})}, 5000);
+        request(
+            "GET",
+            "/api/v1/application/baseUserData",
+            {}
+        ).then((response) => {
+            this.setState({username: response.data.username});
+            console.log(response.data);
+        }).catch ((e) => {
+            console.log(e);
+            tokenErrorHandler(e);
+        })
     }
 
     render() {
@@ -109,7 +122,7 @@ class Application extends React.Component {
                                 {/*<img className="accountNavSectionProfilePictureImage" alt="Account Profile Picture" src=""/>*/}
                                 <div className="accountNavSectionProfilePictureImage"></div>
                             </div>
-                            <p className="accountNavSectionUsername">LoremIpsum123</p>
+                            <p className="accountNavSectionUsername">{this.state.username}</p>
                             <div className="navBackgroundChisel">
                                 <div className="navBackgroundChiselNegative"/>
                             </div>

@@ -1,7 +1,49 @@
 import React from "react";
 import "./Register.css"
+import {request, setAuthToken} from "../../axios_helper";
 
 class Register extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            active: "login",
+            firstName: "",
+            lastName: "",
+            username: "",
+            email: "",
+            password: "",
+        };
+    }
+
+    onRegister = (e) => {
+        e.preventDefault();
+        request(
+            "POST",
+            "/api/v1/register",
+            {
+                firstName: this.state.firstName,
+                lastName: this.state.lastName,
+                username: this.state.username,
+                email: this.state.email,
+                password: this.state.password
+            }
+        ).then((response) => {
+            console.log(e, this.state.username, this.state.password);
+            setAuthToken(response.data.token);
+            window.location.replace("/needsAuth");
+        }).catch((error) => {
+            //Debug data should change later!
+            // Display the actual issue such as user already exist on the webpage
+            console.log(error, this.state.username, this.state.password)
+        });
+    }
+
+    onChangeHandler = (e) => {
+        let name = e.target.name;
+        let value = e.target.value;
+        this.setState({[name]: value});
+    }
+
     render () {
         return (
             <div>
@@ -16,25 +58,25 @@ class Register extends React.Component {
                     <div className="main">
                         <h2>Create Account</h2>
                         <h3>Almost there, fill in the information below and you'll be programming with Programtastic!</h3>
-                        <form>
+                        <form onSubmit={this.onRegister}>
                             <label htmlFor="firstname lastname">Full Name</label>
                             <br/>
                             <div className="inputstack">
-                            <input className="inputfield stacked" type="text" id="firstname" name="firstname" placeholder="First Name"/>
-                            <input className="inputfield stacked" type="text" id="lastname" name="lastname" placeholder="Last Name"/>
+                            <input className="inputfield stacked" type="text" id="firstname" name="firstName" placeholder="First Name" onChange={this.onChangeHandler}/>
+                            <input className="inputfield stacked" type="text" id="lastname" name="lastName" placeholder="Last Name" onChange={this.onChangeHandler}/>
                             </div>
                             <label htmlFor="uername">Username</label>
                             <br/>
-                            <input className="inputfield" type="text" id="username" name="username" placeholder="Username"/>
+                            <input className="inputfield" type="text" id="username" name="username" placeholder="Username" onChange={this.onChangeHandler}/>
                             <br/>
                             <label htmlFor="email">Email</label>
                             <br/>
-                            <input className="inputfield" type="text" id="email" name="email" placeholder="Email"/>
+                            <input className="inputfield" type="text" id="email" name="email" placeholder="Email" onChange={this.onChangeHandler}/>
                             <br/>
                             <label htmlFor="password passwordconfirm">Password</label>
                             <br/>
-                            <input className="inputfield" type="password" id="password" name="password" placeholder="Password"/>
-                            <input className="inputfield spaced" type="password" id="passwordconfirm" name="passwordconfirm" placeholder="Confirm Password"/>
+                            <input className="inputfield" type="password" id="password" name="password" placeholder="Password" onChange={this.onChangeHandler}/>
+                            <input className="inputfield spaced" type="password" id="passwordconfirm" name="passwordconfirm" placeholder="Confirm Password" onChange={this.onChangeHandler}/>
                             <br/>
                             <input className="inputsubmit" type="submit" id="submit" value="Create Account"/>
                             <p>Already have an account? <a href="./login">Login Now!</a></p>
