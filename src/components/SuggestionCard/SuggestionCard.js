@@ -15,6 +15,10 @@ class SuggestionCard extends React.Component {
         this.state.container.editor.setActiveMarker(this.state.id);
     }
 
+    resolveCard = (isApproved) => {
+        this.state.container.resolveSuggestion(this.state.id, isApproved);
+    }
+
     render() {
         return (
             <div className="cardContainer" onClick={() => {this.markFocused()}}>
@@ -32,7 +36,13 @@ class SuggestionCard extends React.Component {
                         {this.props.message}
                     </div>
                 </div>
-                {this.state.id===this.state.container.state.focusedSuggestionID ? <div>Selected, Add approve/deny button and make it update content</div> : <div></div>}
+                {this.state.id===this.state.container.state.focusedSuggestionID ?
+                    <div className="buttonContainer">
+                        <button className="cardButton" onClick={() => this.resolveCard(true)}><div>Accept</div></button>
+                        <button className="cardButton" onClick={() => this.resolveCard(false)}><div>Deny</div></button>
+                    </div>
+                    :
+                    <div></div>}
             </div>
         );
     }

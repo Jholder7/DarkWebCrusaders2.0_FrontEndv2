@@ -46,7 +46,16 @@ class Editor extends React.Component {
         });
     }
 
+    getText() {
+        return this.state.editorText;
+    }
+
+    setText(text) {
+        this.setState({editorText: text});
+    }
+
     executeEval(sourceCode) {
+        let start = Date.now()
         request(
             "POST",
             "/api/v1/application/evalFile",
@@ -60,8 +69,13 @@ class Editor extends React.Component {
             this.state.container.clearSuggestionCard();
             this.markerID = 0;
             this.setState({markers: []});
+            console.log(response.data);
             for(let i = 0; i < response.data.styleErrors; i++) {
-                this.state.container.createNewSuggestionCard(i,"Issue (generate titles later)", response.data.issueSegmentLiterals[i].segmentLiteralData[1], "generate msg later", [], [])
+                let correctionLiteral = response.data.issueSegmentLiterals[i].segmentLiteralData[1]
+                correctionLiteral = correctionLiteral.replaceAll("/n", "\n");
+                correctionLiteral = correctionLiteral.replaceAll("/t", "\t");
+                correctionLiteral = correctionLiteral.replaceAll("____", "     ");
+                this.state.container.createNewSuggestionCard(i, this.resolveTitle(response.data.issueSegmentLiterals[i].segmentLiteralData[1]), response.data.issueSegmentLiterals[i].segmentLiteralData[1], correctionLiteral, this.resolveMessage(response.data.issueSegmentLiterals[i].segmentLiteralData[1]), response.data.issueSegments[i].segmentData[0], response.data.issueSegments[i].segmentData[1])
                 this.setState()
 
             }
@@ -75,12 +89,38 @@ class Editor extends React.Component {
                 this.createMarker(rollingID, x, y, x1, y1+1);
                 rollingID++;
             });
-        }).then(() =>
-            this.state.container.setState({status: "Complete"})
-        ).catch((e) => {
+        }).then(() => {
+            let end = Date.now();
+            this.state.container.setState({status: "Complete"});
+            this.state.container.setState({processTime: (end-start)});
+        }).catch((e) => {
             console.log(e);
             tokenErrorHandler(e);
         })
+    }
+
+    resolveTitle(correction) {
+        if (correction.includes("/n")) {
+            return "Newline Stylistic Correction";
+        }  else if (correction.includes("/t")) {
+            return "Tab Indentation Stylistic Correction";
+        } else if (correction.includes("____")) {
+            return "Space Indentation Stylistic Correction"
+        } else {
+            return "Title Place Holder";
+        }
+    }
+
+    resolveMessage(correction) {
+        if (correction.includes("/n")) {
+            return "The highlighted text should include a new line for stylistic adherence.";
+        }  else if (correction.includes("/t")) {
+            return "The highlighted text should be a tab style indentation.";
+        } else if (correction.includes("____")) {
+            return "The highlighted text should be a space style indentation."
+        } else {
+            return "Title Place Holder";
+        }
     }
 
     render() {

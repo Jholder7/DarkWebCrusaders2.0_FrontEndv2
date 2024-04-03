@@ -270,14 +270,14 @@ nav {
 }
 
 .textHighlight {
-    background: rgba(255, 0, 0, 0.56);
+    background: rgba(255, 0, 0);
     position: absolute;
     height: 2px !important;
     margin-top: 16px;
 }
 
 .activeTextHighlight {
-    background: rgba(255, 0, 0, 0.56);
+    background: rgba(255, 0, 0.70);
     position: absolute;
 }
 

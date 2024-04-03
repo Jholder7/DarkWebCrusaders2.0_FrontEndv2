@@ -68,7 +68,7 @@ class Application extends React.Component {
         super(props);
         this.state = {
             isLoading: true,
-            stylisticErrors: 0,
+            stylisticCorrections: 0,
             improvements: 0,
             estimatedGrades: "100%",
             username: "",
@@ -102,19 +102,29 @@ class Application extends React.Component {
         })
     }
 
-    createNewSuggestionCard(id, title, correction, message, startIndex, endIndex){
-        this.setState(prevState => ({suggestions: [...prevState.suggestions, {id: id, title: title, correction: correction, message: message, startIndex: startIndex, endIndex: endIndex, focused: false}]}));
+    createNewSuggestionCard(id, title, correction, correctionLiteral, message, startIndex, endIndex){
+        this.setState(prevState => ({suggestions: [...prevState.suggestions, {id: id, title: title, correction: correction, correctionLiteral: correctionLiteral, message: message, startIndex: startIndex, endIndex: endIndex, focused: false}]}));
         this.setState({improvements: 0});
         this.setState({estimatedGrade: "100%"});
-        this.setState(prevState => ({stylisticErrors: prevState.stylisticErrors + 1}));
+        this.setState(prevState => ({stylisticCorrections: prevState.stylisticCorrections + 1}));
     }
 
     clearSuggestionCard(){
         //We clear card and data because we will only show info for the currently open file
-        this.setState({stylisticErrors: 0});
+        this.setState({stylisticCorrections: 0});
         this.setState({suggestions: []});
         this.setState({improvements: 0});
         this.setState({estimatedGrade: "100%"})
+    }
+
+    resolveSuggestion(id, isAccepted) {
+        if (isAccepted){
+            let suggestion = this.state.suggestions.find((suggestion => suggestion.id === id));
+            let text = this.editor.getText();
+            let before = text.substring(0, suggestion.startIndex-1);
+            let after = text.substring(suggestion.endIndex+1, text.length);
+            this.editor.setText(before + suggestion.correctionLiteral + after);
+        }
     }
 
     render() {
@@ -181,7 +191,7 @@ class Application extends React.Component {
                         <section className="suggestionsViewerContainer">
                             <div className="suggestions">
                                 <div className="suggestionsStats">
-                                    <StatBox value={this.state.stylisticErrors} title="Stylistic Errors"/>
+                                    <StatBox value={this.state.stylisticCorrections} title="Stylistic Corrections"/>
                                     <StatBox value={this.state.improvements} title="Improvements"/>
                                     <StatBox value={this.state.estimatedGrades} title="Estimated Grade"/>
                                 </div>
