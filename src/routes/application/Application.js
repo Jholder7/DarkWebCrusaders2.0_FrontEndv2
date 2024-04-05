@@ -69,16 +69,24 @@ class Application extends React.Component {
         super(props);
         this.state = {
             isLoading: true,
-            stylisticErrors: "5",
-            improvements: "5",
-            estimatedGrades: "99%",
-            username: ""
+            stylisticCorrections: 0,
+            improvements: 0,
+            estimatedGrade: "100%",
+            username: "",
+            suggestions: [],
+            lineCount: 1,
+            processTime: 0,
+            status: "Waiting...",
+            focusedSuggestionID: null
         }
         // Fix it flashing react app before changing
         document.title = 'Programtastic - App';
+        document.appContext = this;
+        this.timer = null;
+        this.editor = null;
     }
-
-    componentDidMount() {
+    Programtastic
+    componentDidMount = () => {
         // We can just pull all needed data and update out finish flash using the async finish function, the update this variable when we have all the data
         // We sorta want the whole screen to load so that way we can inject the data as we receive it so its ready once done loading.
         setTimeout(() => {this.setState({isLoading: false})}, 5000);
@@ -95,6 +103,49 @@ class Application extends React.Component {
         })
     }
 
+    createNewSuggestionCard(id, title, correction, correctionLiteral, message, startIndex, endIndex){
+        this.setState(prevState => ({suggestions: [...prevState.suggestions, {id: id, title: title, correction: correction, correctionLiteral: correctionLiteral, message: message, startIndex: startIndex, endIndex: endIndex, focused: false}]}));
+        this.setState({improvements: 0});
+        let total = this.editor.getText().split("\n").length;
+        this.setState(prevState => ({estimatedGrade: (Math.floor(((total-prevState.suggestions.length)/total)*100) <= 0 ? 0 : Math.floor(((total-prevState.suggestions.length)/total)*100)) + "%"}));
+        this.setState(prevState => ({stylisticCorrections: prevState.stylisticCorrections + 1}));
+    }
+
+    clearSuggestionCard(){
+        //We clear card and data because we will only show info for the currently open file
+        this.setState({stylisticCorrections: 0});
+        this.setState({suggestions: []});
+        this.setState({improvements: 0});
+        this.setState({estimatedGrade: "100%"})
+    }
+
+    resolveSuggestion(id, isAccepted) {
+        if (isAccepted){
+            let suggestion = this.state.suggestions.find((suggestion => suggestion.id === id));
+            let text = this.editor.getText();
+            let before = text.substring(0, suggestion.startIndex);
+            // If you come back to work on this god bless you, there is slight shifting with ending newlines, no fucking clue why.
+            // My initial guess is a character encoding issue, where newline is actually one character on the backend and two
+            // character on the front end. No clue how to prove this, but it is the only possible way this could happen.
+            // The below code causes the double character shift to go away in the specific case it matters, I'm going to ignore
+            // that this is an actual pressing issue everywhere else because we cant visually see it.
+            // (Total time spent: 2.25hrs)
+            if (before[before.length-1] === "\n") {
+                before = text.substring(0, suggestion.startIndex-1);
+            }
+            let after = text.substring(suggestion.endIndex+1, text.length);
+            this.editor.setText(before + suggestion.correctionLiteral + after);
+            this.editor.removeMarker(id, before + suggestion.correctionLiteral + after);
+        } else {
+            // This is not fully implemented, it will temporally hide the issue until recalculate happens
+            this.state.suggestions.forEach(suggestion => {
+                if (suggestion.id === id) {
+                    suggestion.hide = true;
+                }
+            })
+        }
+    }
+
     render() {
         return (
             <div>
@@ -102,7 +153,7 @@ class Application extends React.Component {
                     {/*This div covers the whole screen while isLoading any child components under here will be hidden when loading is done*/}
                     {/*Add any loading animations, svgs, or gifs here and styler her up*/}
                     <div className="spinner">
-                        <span>The Power of Programtastic. . .</span>
+                        <span>Programtastic</span>
                         <div className="half-spinner"></div>
                     </div>
                 </div>
@@ -151,36 +202,31 @@ class Application extends React.Component {
                                 </section>
                                 <div className="bottomPanelQuickInfo">
                                     <h4 className="bottomPanelQuickInfoStat ">src/folder/sourceFile.txt</h4>
-                                    <h4 className="bottomPanelRightAlign bottomPanelQuickInfoStat bottomPanelQuickInfoPad">Waiting...</h4>
-                                    <h4 className="bottomPanelQuickInfoStat bottomPanelQuickInfoPad">0ms</h4>
+                                    <h4 className="bottomPanelRightAlign bottomPanelQuickInfoStat bottomPanelQuickInfoPad">{this.state.status}</h4>
+                                    <h4 className="bottomPanelQuickInfoStat bottomPanelQuickInfoPad">{this.state.processTime}ms</h4>
                                     <h4 className="bottomPanelQuickInfoStat bottomPanelQuickInfoPad">UTF-8</h4>
-                                    <h4 className="bottomPanelQuickInfoStat bottomPanelQuickInfoPad">0 Lines</h4>
+                                    <h4 className="bottomPanelQuickInfoStat bottomPanelQuickInfoPad">{this.state.lineCount} Lines</h4>
                                 </div>
                             </div>
                         </section>
                         <section className="suggestionsViewerContainer">
-                            <Toggle>
-                                <div className="suggestions">
-                                    <div className="suggestionsStats">
-                                        <StatBox value={this.state.stylisticErrors} title="Stylistic Errors"/>
-                                        <StatBox value={this.state.improvements} title="Improvements"/>
-                                        <StatBox value={this.state.estimatedGrades} title="Estimated Grade"/>
-                                    </div>
-                                    <div className="suggestionCards">
-                                        <SuggestionCard/>
-                                        <SuggestionCard/>
-                                        <SuggestionCard/>
-                                        <SuggestionCard/>
-                                        <SuggestionCard/>
-                                        <SuggestionCard/>
-                                    </div>
-                                    <div className="suggestionSettingsSection">
-                                        <SettingsButton title="Evaluation Settings" callback={() => {
-                                            window.settingsModal.setDisplay(true);
-                                        }}/>
-                                    </div>
+                          <Toggle>
+                            <div className="suggestions">
+                                <div className="suggestionsStats">
+                                    <StatBox value={this.state.stylisticCorrections} title="Stylistic Corrections"/>
+                                    <StatBox value={this.state.improvements} title="Improvements"/>
+                                    <StatBox value={this.state.estimatedGrade} title="Estimated Grade"/>
                                 </div>
-                                </Toggle>
+                                <div className="suggestionCards">
+                                    {this.state.suggestions.map(suggestion => suggestion.hide ? <></> : <SuggestionCard id={suggestion.id} title={suggestion.title} correction={suggestion.correction} message={suggestion.message}/>)}
+                                </div>
+                                <div className="suggestionSettingsSection">
+                                    <SettingsButton title="Evaluation Settings" callback={() => {
+                                        window.settingsModal.setDisplay(true);
+                                    }}/>
+                                </div>
+                            </div>
+                          </Toggle>
                         </section>
                     </main>
                 </div>
