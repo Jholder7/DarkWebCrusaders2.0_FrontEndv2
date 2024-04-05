@@ -54,6 +54,10 @@ class Editor extends React.Component {
         this.setState({editorText: text});
     }
 
+    removeMarker = (id, newText) => {
+        this.executeEval(newText);
+    }
+
     executeEval(sourceCode) {
         let start = Date.now()
         request(
@@ -74,10 +78,9 @@ class Editor extends React.Component {
                 let correctionLiteral = response.data.issueSegmentLiterals[i].segmentLiteralData[1]
                 correctionLiteral = correctionLiteral.replaceAll("/n", "\n");
                 correctionLiteral = correctionLiteral.replaceAll("/t", "\t");
-                correctionLiteral = correctionLiteral.replaceAll("____", "     ");
+                correctionLiteral = correctionLiteral.replaceAll("_", " ");
                 this.state.container.createNewSuggestionCard(i, this.resolveTitle(response.data.issueSegmentLiterals[i].segmentLiteralData[1]), response.data.issueSegmentLiterals[i].segmentLiteralData[1], correctionLiteral, this.resolveMessage(response.data.issueSegmentLiterals[i].segmentLiteralData[1]), response.data.issueSegments[i].segmentData[0], response.data.issueSegments[i].segmentData[1])
                 this.setState()
-
             }
             let rollingID = 0
             response.data.issueSegments.forEach((segment) => {
