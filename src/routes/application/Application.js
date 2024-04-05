@@ -7,6 +7,7 @@ import SettingsModal from "../../components/SettingsModal/SettingsModal";
 import SuggestionCard from "../../components/SuggestionCard/SuggestionCard";
 import FileExplorer from "../../components/FileExplorer/FileExplorer";
 import Toggle from "../../components/ToggleShowAndHide/Toggle";
+import exit from "./resources/exit.svg";
 import {request, tokenErrorHandler} from "../../axios_helper";
 
 let TestingFileStructure = {
@@ -77,19 +78,21 @@ class Application extends React.Component {
             lineCount: 1,
             processTime: 0,
             status: "Waiting...",
-            focusedSuggestionID: null
+            focusedSuggestionID: null,
+            fileTabs: [],
         }
         // Fix it flashing react app before changing
         document.title = 'Programtastic - App';
         document.appContext = this;
         this.timer = null;
         this.editor = null;
+        this.fileTabIDCounter = 0;
     }
     Programtastic
     componentDidMount = () => {
         // We can just pull all needed data and update out finish flash using the async finish function, the update this variable when we have all the data
         // We sorta want the whole screen to load so that way we can inject the data as we receive it so its ready once done loading.
-        setTimeout(() => {this.setState({isLoading: false})}, 5000);
+        setTimeout(() => {this.setState({isLoading: false})}, 2000);
         request(
             "GET",
             "/api/v1/application/baseUserData",
@@ -101,6 +104,12 @@ class Application extends React.Component {
             console.log(e);
             tokenErrorHandler(e);
         })
+        this.openNewTab(0, null, "1Example.java");
+        this.openNewTab(0, null, "2Example.java");
+    }
+
+    openNewTab (id, path, name) {
+        this.setState(prevState => ({fileTabs: [...prevState.fileTabs , {id: this.fileTabIDCounter++, filePath: path, fileName: name}]}))
     }
 
     createNewSuggestionCard(id, title, correction, correctionLiteral, message, startIndex, endIndex){
@@ -181,9 +190,12 @@ class Application extends React.Component {
                         <div className="tailNavSection">
                             <div className="navBackgroundChunk"/>
                         </div>
+                        <section className="tabSection">
+                            {this.state.fileTabs.map(tab => <FileTab id={tab.id} path={tab.filePath} name={tab.fileName} isSelected={false}/>)}
+                        </section>
                     </nav>
                     <main>
-                        <section className="fileViewerContainer">
+                    <section className="fileViewerContainer">
                             <div className="fileViewer">
                                 <section className="panelBody fileViewerPanel">
                                     <FileExplorer filesData={TestingFileStructure} />
@@ -214,7 +226,7 @@ class Application extends React.Component {
                             <div className="suggestions">
                                 <div className="suggestionsStats">
                                     <StatBox value={this.state.stylisticCorrections} title="Stylistic Corrections"/>
-                                    <StatBox value={this.state.improvements} title="Improvements"/>
+                                    <StatBox value={this.state.improvements} title="General Improvements"/>
                                     <StatBox value={this.state.estimatedGrade} title="Estimated Grade"/>
                                 </div>
                                 <div className="suggestionCards">
@@ -231,6 +243,30 @@ class Application extends React.Component {
                     </main>
                 </div>
             </div>
+        )
+    }
+}
+
+class FileTab extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            id: props.id,
+            name: props.name,
+            path: props.path,
+            isSelected: props.isSelected
+        }
+    }
+
+    closeTab() {
+    }
+
+    openTab() {
+    }
+
+    render() {
+        return (
+            <div onClick={()=>{this.openTab()}} className={this.state.isSelected ? "tab tabSelected" : "tab tabIdle"}>{this.state.name}<img onClick={()=> {this.closeTab()}} className="tabExit" src={exit} alt="exit"/></div>
         )
     }
 }

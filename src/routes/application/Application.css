@@ -51,19 +51,20 @@ nav {
 
 .accountNavSectionProfilePicture {
     background: var(--background-panel);
-    width: 34px;
-    height: 34px;
+    width: 32px;
+    height: 32px;
     margin: 3px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: solid 2px var(--background-panel-darker);;
 }
 
 .accountNavSectionProfilePictureImage {
-    background: white;
-    width: 90%;
-    height: 90%;
+    background: gray;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
 }
 
@@ -263,7 +264,6 @@ nav {
     border-top: 3px solid transparent;
     border-radius: 5%;
     animation: spin 1.5s linear 0s infinite;
-    animation-direction: alternate-reverse;
 }
 
 .completed {
@@ -294,24 +294,20 @@ nav {
 }
 
 @keyframes spin {
-    from {
+    0% {
         transform: rotate(0);
         border-color: rgb(237, 75, 255);
         border-radius: 5%;
     }
-    to {
-        transform: rotate(360deg);
+    50% {
+        transform: rotate(180deg);
         border-color: rgb(75, 75, 255);
         border-radius: 50%;
     }
-}
-
-@keyframes fade {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
+    100% {
+        transform: rotate(360deg);
+        border-color: rgb(237, 75, 255);
+        border-radius: 5%;
     }
 }
 
@@ -322,4 +318,73 @@ nav {
     max-width: 1485px;
     /* border: 1px solid black; */
     overflow: auto;
+}
+
+/* File Tab Styles */
+/*.accountNavSection {*/
+/*    width: 15%;*/
+/*    min-width: 280px;*/
+/*    height: 100%;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    position: relative;*/
+/*}*/
+.tabSection {
+    width: 85%;
+    height: 40px;
+    position: absolute;
+    margin-left: 15%;
+    display: flex;
+    align-items: end;
+    box-sizing: border-box;
+}
+
+.tab {
+    border-radius: 5px;
+    padding: 0 10px 0 10px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 5px;
+    position: relative;
+    cursor: pointer;
+}
+
+.tabSelected {
+    background: linear-gradient(45deg, rgba(237, 75, 255, 0.6), rgba(75, 75, 255, 0.6));
+    color: white;
+}
+
+.tabIdle {
+    background: #282C34;
+    color: var(--base-font);
+}
+
+.tab::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1.5px;
+    background: linear-gradient(45deg, var(--accent-purple), var(--accent-blue));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+
+.tabExit {
+    width: 20px;
+    height: auto;
+    margin: 0 -5px 0 5px;
+    transition: 200ms;
+}
+
+.tabExit:hover {
+    background: rgba(255, 77, 77, 0.71);
+    border-radius: 5px;
 }
