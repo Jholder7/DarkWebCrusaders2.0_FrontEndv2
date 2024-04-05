@@ -305,3 +305,21 @@ nav {
         border-radius: 50%;
     }
 }
+
+@keyframes fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.fillSpace {
+    resize: horizontal;
+    height: 99.9%;
+    min-width: 100%;
+    max-width: 1485px;
+    /* border: 1px solid black; */
+    overflow: auto;
+}
