@@ -1,10 +1,11 @@
-import React, { Component } from 'react' 
+import React, { Component } from 'react'
+import "./Toggle.css"
 
 export class Toggle extends Component {  
     constructor(props) {  
         super(props);  
         this.state = {  
-            open: false,  
+            open: true,
         };  
         this.togglebutton = this.togglebutton.bind(this);  
     }  
@@ -15,26 +16,21 @@ export class Toggle extends Component {
         });  
     }  
     render() {  
-        var { title, children } = this.props; 
+        var { children } = this.props;
         
-        const { open } = this.state;  
-        if (open) {  
-            title = 'Close Stat Boxes';  
-        } else {  
-            title = 'Open Stat Boxes';  
-        }  
-        return (  
-            <div>
-                <div onClick={this.togglebutton}>  
-                    {title}
-                </div>  
-                {open && (  
-                    <div>  
-                        {children}  
-                    </div>  
+        const { open } = this.state;
+        return (
+            <div className={open ? "toggleBox" : "toggleBox hidden"}>
+                <div className="toggleButton" onClick={this.togglebutton}>
+                    <div className="toggleButtonInner"></div>
+                </div>
+                {open && (
+                    <div className={open ? "container" : "containerHidden"}>
+                        {children}
+                    </div>
                 )}
-            </div>  
-        );  
-    }  
-}  
+            </div>
+        );
+    }
+}
 export default Toggle 

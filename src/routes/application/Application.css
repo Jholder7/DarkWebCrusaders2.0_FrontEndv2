@@ -128,7 +128,7 @@ nav {
 /*Source Code Editor*/
 .sourceCodeEditorContainer {
     height: 100%;
-    width: 80%;
+    width: 100%;
     box-sizing: border-box;
     padding: 10px 5px 50px 5px;
 }
@@ -144,13 +144,11 @@ nav {
 }
 
 /*suggestions Viewer*/
-.suggestionsViewerContainer {
+.suggestionsViewerContainerFixed {
     height: 100%;
-    width: 25%;
     box-sizing: border-box;
     padding: 10px 10px 50px 5px;
-    min-width: 400px;
-    max-width: 450px;
+    max-width: 440px;
 }
 
 .suggestions {
@@ -160,6 +158,8 @@ nav {
     border-radius: 5px;
     display: flex;
     flex-direction: column;
+    max-width: 380px;
+
 }
 
 .suggestionsStats {

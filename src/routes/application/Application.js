@@ -209,7 +209,7 @@ class Application extends React.Component {
                                 </div>
                             </div>
                         </section>
-                        <section className="suggestionsViewerContainer">
+                        <section className="suggestionsViewerContainerFixed">
                           <Toggle>
                             <div className="suggestions">
                                 <div className="suggestionsStats">
