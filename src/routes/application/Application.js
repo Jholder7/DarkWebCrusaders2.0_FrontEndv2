@@ -88,7 +88,7 @@ class Application extends React.Component {
     componentDidMount = () => {
         // We can just pull all needed data and update out finish flash using the async finish function, the update this variable when we have all the data
         // We sorta want the whole screen to load so that way we can inject the data as we receive it so its ready once done loading.
-        setTimeout(() => {this.setState({isLoading: false})}, 10000);
+        setTimeout(() => {this.setState({isLoading: false})}, 5000);
         request(
             "GET",
             "/api/v1/application/baseUserData",
