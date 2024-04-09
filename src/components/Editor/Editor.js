@@ -69,11 +69,9 @@ class Editor extends React.Component {
                 settings: ["3Allman"]
             }
         ).then((response) => {
-            console.log(response.data);
             this.state.container.clearSuggestionCard();
             this.markerID = 0;
             this.setState({markers: []});
-            console.log(response.data);
             for(let i = 0; i < response.data.styleErrors; i++) {
                 let correctionLiteral = response.data.issueSegmentLiterals[i].segmentLiteralData[1]
                 correctionLiteral = correctionLiteral.replaceAll("/n", "\n");

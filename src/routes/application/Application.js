@@ -80,6 +80,7 @@ class Application extends React.Component {
             status: "Waiting...",
             focusedSuggestionID: null,
             fileTabs: [],
+            tabSelected: null,
         }
         // Fix it flashing react app before changing
         document.title = 'Programtastic - App';
@@ -88,7 +89,7 @@ class Application extends React.Component {
         this.editor = null;
         this.fileTabIDCounter = 0;
     }
-    Programtastic
+
     componentDidMount = () => {
         // We can just pull all needed data and update out finish flash using the async finish function, the update this variable when we have all the data
         // We sorta want the whole screen to load so that way we can inject the data as we receive it so its ready once done loading.
@@ -99,17 +100,33 @@ class Application extends React.Component {
             {}
         ).then((response) => {
             this.setState({username: response.data.username});
-            console.log(response.data);
         }).catch ((e) => {
             console.log(e);
             tokenErrorHandler(e);
         })
-        this.openNewTab(0, null, "1Example.java");
-        this.openNewTab(0, null, "2Example.java");
     }
 
-    openNewTab (id, path, name) {
-        this.setState(prevState => ({fileTabs: [...prevState.fileTabs , {id: this.fileTabIDCounter++, filePath: path, fileName: name}]}))
+    openNewTab (id, path, name, editorContent) {
+        this.setState(prevState => ({fileTabs: [...prevState.fileTabs , {id: this.fileTabIDCounter++, filePath: path, fileName: name, data: editorContent}]}))
+    }
+
+    closeTab(id) {
+        if (this.state.fileTabs.length <= 1) {
+            this.editor.setText("");
+        } else {
+            this.setActiveTab(this.state.fileTabs.find(tab => tab.id !== id).id)
+        }
+        this.setState(prevState => ({fileTabs: prevState.fileTabs.filter(tab => tab.id !== id)}));
+    }
+
+    setActiveTab(id) {
+        this.setState({fileTabs: this.state.fileTabs.map(tab => (tab.id === this.state.tabSelected ? {...tab, data: this.editor.getText()} : tab))});
+        this.setState({tabSelected: id});
+        console.log(id)
+        console.log(this.state.fileTabs)
+        console.log(this.state.fileTabs.find(tab => tab.id === id))
+        this.editor.setText((this.state.fileTabs.find(tab => tab.id === id)).data);
+        this.editor.executeEval((this.state.fileTabs.find(tab => tab.id === id)).data);
     }
 
     createNewSuggestionCard(id, title, correction, correctionLiteral, message, startIndex, endIndex){
@@ -191,7 +208,7 @@ class Application extends React.Component {
                             <div className="navBackgroundChunk"/>
                         </div>
                         <section className="tabSection">
-                            {this.state.fileTabs.map(tab => <FileTab id={tab.id} path={tab.filePath} name={tab.fileName} isSelected={false}/>)}
+                            {this.state.fileTabs.map(tab=> <FileTab key={tab.id} id={tab.id} path={tab.filePath} name={tab.fileName}/>)}
                         </section>
                     </nav>
                     <main>
@@ -235,6 +252,7 @@ class Application extends React.Component {
                                 <div className="suggestionSettingsSection">
                                     <SettingsButton title="Evaluation Settings" callback={() => {
                                         window.settingsModal.setDisplay(true);
+                                        this.openNewTab(0, null,  this.fileTabIDCounter + "Example.java", "");
                                     }}/>
                                 </div>
                             </div>
@@ -259,14 +277,16 @@ class FileTab extends React.Component {
     }
 
     closeTab() {
+        document.appContext.closeTab(this.state.id);
     }
 
     openTab() {
+        document.appContext.setActiveTab(this.state.id);
     }
 
     render() {
         return (
-            <div onClick={()=>{this.openTab()}} className={this.state.isSelected ? "tab tabSelected" : "tab tabIdle"}>{this.state.name}<img onClick={()=> {this.closeTab()}} className="tabExit" src={exit} alt="exit"/></div>
+            <div onClick={()=>{this.openTab()}} className={(document.appContext.state.tabSelected === this.state.id) ? "tab tabSelected" : "tab tabIdle"}>{this.state.name}<img onClick={e => {e.stopPropagation(); this.closeTab()}} className="tabExit" src={exit} alt="exit"/></div>
         )
     }
 }
