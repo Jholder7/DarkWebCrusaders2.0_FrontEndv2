@@ -13,6 +13,7 @@ import Login from "./routes/login/Login";
 import Register from "./routes/register/Register";
 import Recovery from "./routes/recovery/Recovery";
 import AuthContent from "./components/AuthContent/AuthContent";
+import Account from "./routes/account/Account";
 
 class App extends Component {
     constructor(props) {
@@ -59,6 +60,12 @@ class App extends Component {
                         title="Programtastic - Debug"
                         path="/needsAuth"
                         element={<AuthContent/>}
+                    ></Route>
+                    <Route
+                        exact
+                        title="Programtastic - Projects"
+                        path="/account"
+                        element={<Account/>}
                     ></Route>
                     <Route
                         exact

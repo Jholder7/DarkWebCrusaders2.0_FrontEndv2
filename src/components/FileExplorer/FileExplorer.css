@@ -15,6 +15,7 @@
     cursor: pointer;
     height: 25px;
     margin-right: 8px;
+    font-weight: 400;
 }
 
 .folderName:hover {
@@ -31,7 +32,8 @@
     font-size: 16px;
     cursor: pointer;
     height: 25px;
-    margin-right: 8px
+    margin-right: 8px;
+    font-weight: 400;
 }
 
 .fileName:hover {

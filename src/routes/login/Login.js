@@ -26,7 +26,7 @@ class Login extends React.Component {
         ).then((response) => {
             console.log(e, this.state.username, this.state.password)
             setAuthToken(response.data.token);
-            window.location.replace("/application");
+            window.location.replace("/account");
         }).catch((error) => {
             //Debug data should change later!
             // Display the actual issue such as invalid username of password on webpage

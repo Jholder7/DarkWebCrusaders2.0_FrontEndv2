@@ -30,7 +30,7 @@ class Register extends React.Component {
         ).then((response) => {
             console.log(e, this.state.username, this.state.password);
             setAuthToken(response.data.token);
-            window.location.replace("/needsAuth");
+            window.location.replace("/account");
         }).catch((error) => {
             //Debug data should change later!
             // Display the actual issue such as user already exist on the webpage

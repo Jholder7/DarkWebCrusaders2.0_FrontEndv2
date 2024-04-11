@@ -1,0 +1,308 @@
+.body{
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+
+}
+.accountNav{
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.accountNavHeader{
+    margin-left: 5px;
+    font-weight: 500;
+    color: var(--background);
+    font-family: 'Nunito', sans-serif;
+    font-size: 30px;
+}
+.accountNavImg {
+    width: 31px;
+    height: 31px;
+    margin-left: 10px;
+}
+.accountNavPicture{
+    margin-right: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: white;
+    border: solid 2px black;
+}
+.accountNavAccountName {
+    margin-right: 5px;
+    color: var(--background-panel-darker);
+    font-size: 16px;
+}
+.accountBodyContent {
+    height: 100%;
+    background: var(--background);
+    display: flex;
+}
+.leftPanel{
+    height: 100%;
+    width: 13%;
+    min-width: 230px;
+    box-sizing: border-box;
+    padding: 10px 5px 10px 10px;
+}
+.leftPanelContent {
+    height: 100%;
+    width: 100%;
+    background: var(--background-panel);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}
+.rightPanel {
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 10px 10px 5px;
+}
+.rightPanelContent{
+    background: var(--background-panel);
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.copyrightTab {
+    font-size: 10px;
+    width: 100%;
+    text-align: center;
+    margin: auto 0 5px 0;
+    font-weight: 200;
+}
+.leftPanelPage {
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    color: var(--base-font);
+    font-weight: 400;
+    width: 100%;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.leftPanelPageSelected {
+    background: linear-gradient(45deg, rgba(237, 75, 255, 0.22), rgba(75, 75, 255, 0.22));
+}
+.leftPanelPage:hover {
+    background: rgba(23, 23, 35, 0.24);
+}
+.leftPanelPage:active {
+    background: rgba(62, 62, 94, 0.24);
+}
+.leftPanelPageIcon {
+    margin: 0 5px 0 15px;
+}
+.bugReport {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 10px;
+    margin-bottom: 5px;
+}
+.bugReportButton {
+    width: 100%;
+    height: 100%;
+    color: var(--base-font);
+    position: relative;
+    background: linear-gradient(45deg, rgba(237, 75, 255, 0.50), rgba(75, 75, 255, 0.50));
+    border-radius: 5px;
+    border-style: none;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600 !important;
+    font-size: 14px;
+}
+.bugReportButton::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 2px;
+    background: linear-gradient(45deg, var(--accent-purple), var(--accent-blue));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+.AccountNavAccountInfo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.dropIcon{
+    width: 25px;
+    margin-right: 0;
+}
+.bugReportButton > div {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bugReportButton > div:hover {
+    transition: 300ms;
+    background: rgba(0, 0, 0, 0.45);
+}
+
+.bugReportButton > div:active {
+    transition: 300ms;
+    background: rgba(82, 82, 82, 0.16);
+}
+.pageHeader {
+    font-size: 30px;
+    font-weight: 600;
+}
+.pageHeaderLine {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(-45deg, var(--accent-purple), var(--accent-blue));
+    border-radius: 5px;
+    margin-top: 10px;
+}
+.pageSubheadingButtonBar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row
+}
+.subheadingBar {
+    width: 90px;
+    height: 30px;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    box-sizing: border-box;
+    margin-bottom: 5px;
+    margin-top: 20px;
+    font-weight: 300;
+}
+.subheadingBarButton {
+    width: 100%;
+    height: 100%;
+    color: var(--base-font);
+    position: relative;
+    background: linear-gradient(45deg, rgba(237, 75, 255, 0.50), rgba(75, 75, 255, 0.50));
+    border-radius: 5px;
+    border-style: none;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600 !important;
+    font-size: 14px;
+}
+.subheadingBarButton::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 2px;
+    background: linear-gradient(45deg, var(--accent-purple), var(--accent-blue));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+.subheadingBarButton > div {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.subheadingBarButton > div:hover {
+    transition: 300ms;
+    background: rgba(0, 0, 0, 0.45);
+}
+
+.subheadingBarButton > div:active {
+    transition: 300ms;
+    background: rgba(82, 82, 82, 0.16);
+}
+.projectListContainer {
+    background: var(--background-panel-darker);
+    width: 100%;
+    height: 100%;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+.rightPanelInnerContent {
+    width: 60%;
+    min-width: 700px;
+    height: 80%;
+    min-height: 600px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+.project {
+    height: 100px;
+    width: 100%;
+    border-bottom: solid 2px var(--background-panel);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding: 15px 0;
+}
+.projectIcon {
+    width: 30px;
+    height: 30px;
+    background: #282C34;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+.projectBar {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+    padding-right: 20px;
+    box-sizing: border-box;
+}
+.projectTitle {
+    font-weight: 500;
+}
+.projectTimeStamp {
+    font-weight: 300;
+    margin-left: auto;
+}
+.projectSize {
+    font-weight: 300;
+    margin-left: 20px;
+}
+.projectStat {
+    font-weight: 300;
+    padding: 0;
+    margin: 0 0 0 20px;
+}
+.projectLang {
+    margin-right: auto;
+    font-weight: 400;
+}
+.project:hover{
+    background: rgba(36, 39, 61, 0.34);
+}
+.project:active{
+    background: rgba(68, 71, 114, 0.34);
+}
