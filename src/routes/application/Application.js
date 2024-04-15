@@ -252,7 +252,6 @@ class Application extends React.Component {
                                 <div className="suggestionSettingsSection">
                                     <SettingsButton title="Evaluation Settings" callback={() => {
                                         window.settingsModal.setDisplay(true);
-                                        this.openNewTab(0, null,  this.fileTabIDCounter + "Example.java", "");
                                     }}/>
                                 </div>
                             </div>

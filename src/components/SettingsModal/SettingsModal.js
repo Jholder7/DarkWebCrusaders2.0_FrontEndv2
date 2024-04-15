@@ -31,6 +31,7 @@ class SettingsModal extends React.Component {
                         <h3 className="topBarHeader">Style Options</h3>
                         <button className="closeModal" onClick={() => {
                             this.setDisplay(false)
+                            document.appContext.editor.remoteTriggerEval()
                         }}>
                             <div>Close</div>
                         </button>

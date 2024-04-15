@@ -8,19 +8,76 @@ import dropIcon from './resources/drop.svg'
 import accountIcon from './resources/account.svg'
 import reportIcon from './resources/report.svg'
 import newIcon from './resources/new.svg'
+import uploadIcon from './resources/upload.svg'
+import Dropzone from 'react-dropzone'
 
 export default class Account extends React.Component{
     constructor(props) {
         super(props)
         this.state = {
-
+            isUploading: false,
+            uploadStarted: false,
+            projectData: [],
+            loadStatus: 0,
         }
         document.title = 'Programtastic - Account';
+    }
+
+    HandleFile(event) {
+        for(let file of event.target.files) {
+            console.log("")
+        }
     }
 
     render() {
         return (
             <main className="body">
+                <div className={this.state.isUploading ? "projectUploadLayover" : "hiddenEl"}>
+                    <div className="projectUpload">
+                        <Dropzone onDrop={acceptedFiles => {
+                            //Files are uploading correctly but we will need to make the progress bar show this
+                            // Then when create is pressed send data to server and display loading screen until complete
+                            this.setState({loadStatus: 0})
+                            this.setState({uploadStarted: true});
+                            let total = 100 / acceptedFiles.length;
+                            let newFileData = []
+                            for (let file of acceptedFiles) {
+                                let data = {name: file.name, path: file.path, contents: -1 };
+                                file.text().then(con => {
+                                    data.contents = con
+                                    this.setState(prevState => ({loadStatus: prevState.loadStatus + total}));
+                                });
+                                newFileData.push(data);
+                                console.log(newFileData)
+                            }
+                        }}>
+                            {({getRootProps, getInputProps}) => (
+                                <section className="upload">
+                                    <div {...getRootProps({className: 'uploadInner'})}>
+                                        <input {...getInputProps()} />
+                                        <h1 className="uploadHeader">Upload Project</h1>
+                                        <img src={uploadIcon} alt="Upload Project" className="uploadIcon"/>
+                                        <h2 className="uploadSubheader">Drag and Drop or Press To Upload</h2>
+                                        <progress className={this.state.uploadStarted ? "uploadProgressBar" : "hiddenEl"} max={100} value={this.state.loadStatus}></progress>
+                                    </div>
+                                </section>
+                            )}
+                        </Dropzone>
+                        <div className="buttonBar">
+                            <div className="subheadingBar padLeft uploadButton">
+                                <button className="subheadingBarButton" onClick={() => {
+                                    this.setState({isUploading: false});
+                                    this.setState({projectData: []});
+                                    this.setState({loadStatus: 0})
+                                }}><div>Cancel</div></button>
+                            </div>
+                            <div className="subheadingBar uploadButton">
+                                <button className="subheadingBarButton" onClick={() => {
+                                }}><div>Create</div></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <link rel="preconnect" href="https://fonts.googleapis.com"/>
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true"/>
                 <link
@@ -69,6 +126,7 @@ export default class Account extends React.Component{
                                 <div className="pageSubheadingButtonBar">
                                     <div className="subheadingBar">
                                         <button className="subheadingBarButton" onClick={() => {
+                                            this.setState({isUploading: true});
                                         }}>
                                             <div>
                                                 <img className="leftPanelPageIcon"

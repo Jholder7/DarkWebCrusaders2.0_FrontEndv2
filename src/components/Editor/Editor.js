@@ -58,15 +58,25 @@ class Editor extends React.Component {
         this.executeEval(newText);
     }
 
+    remoteTriggerEval() {
+        this.executeEval(this.state.editorText);
+    }
+
     executeEval(sourceCode) {
         let start = Date.now()
+        let settings = null;
+        if (document.settings == null) {
+            settings = ["3Allman"];
+        } else {
+            settings = document.settings
+        }
         request(
             "POST",
             "/api/v1/application/evalFile",
             {
                 fileTitle: "TestFileName.js",
                 fileContents: sourceCode.replaceAll("\r", "").replaceAll("\"", "\u0022"),
-                settings: ["3Allman"]
+                settings: settings
             }
         ).then((response) => {
             this.state.container.clearSuggestionCard();
