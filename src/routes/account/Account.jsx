@@ -10,6 +10,7 @@ import reportIcon from './resources/report.svg'
 import newIcon from './resources/new.svg'
 import uploadIcon from './resources/upload.svg'
 import Dropzone from 'react-dropzone'
+import {request, tokenErrorHandler} from "../../axios_helper";
 
 export default class Account extends React.Component{
     constructor(props) {
@@ -28,6 +29,46 @@ export default class Account extends React.Component{
             console.log("")
         }
     }
+
+    componentDidMount() {
+        request(
+            "POST",
+            "/api/v1/application/project/getProjectByID",
+            {
+                ID: 1
+            }
+        ).then((response) => {
+            console.log(response.data)
+        }).catch((e) => {
+            //Debug data should change later!
+            // Display the actual issue such as invalid username of password on webpage
+            console.log(e)
+            tokenErrorHandler(e);
+        });
+    }
+
+    createProject() {
+        request(
+            "POST",
+            "/api/v1/application/project/createNewProject",
+            {
+                projectName: "test",
+                lastEdited: (new Date()).toISOString(),
+                projectSize: 5,
+                projectStyleCorrections: 5,
+                projectGeneralImprovements: 5,
+                projectEstimatedGrade: 5
+            }
+        ).then((response) => {
+            console.log(response.data)
+        }).catch((e) => {
+            //Debug data should change later!
+            // Display the actual issue such as invalid username of password on webpage
+            console.log(e)
+            tokenErrorHandler(e);
+        });
+    }
+
 
     render() {
         return (
@@ -73,6 +114,7 @@ export default class Account extends React.Component{
                             </div>
                             <div className="subheadingBar uploadButton">
                                 <button className="subheadingBarButton" onClick={() => {
+                                    this.createProject();
                                 }}><div>Create</div></button>
                             </div>
                         </div>

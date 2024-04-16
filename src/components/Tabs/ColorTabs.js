@@ -35,7 +35,7 @@ export default function ColorTabs() {
                 indicatorColor="secondary"
                 aria-label="secondary tabs example"
             >
-                <Tab value="one" label="Visual Style" />
+                <Tab value="one" label="Style Standard" />
                 <Tab value="two" label="Other Settigns" />
             </Tabs>
             <TabPanel value="one" className="tabContainer" >
@@ -190,10 +190,11 @@ export default function ColorTabs() {
             </TabPanel>
             <TabPanel value="two">
                 <button onClick={() => {
-                    document.appContext.openNewTab(0, null,   "Blank.txt", "txt");
-                }}>Open Blank Tab</button>
+                    document.appContext.openNewTab(0, null, "Blank.txt", "txt");
+                }}>Open Blank Tab
+                </button>
             </TabPanel>
-      </TabContext>
+        </TabContext>
     </Box>
-  );
+    );
 }
