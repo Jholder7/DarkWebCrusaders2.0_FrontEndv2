@@ -244,6 +244,7 @@
     height: 100%;
     margin-top: 10px;
     border-radius: 5px;
+    overflow-y: auto;
 }
 .rightPanelInnerContent {
     width: 60%;

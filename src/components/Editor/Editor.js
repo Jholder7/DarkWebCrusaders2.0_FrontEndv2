@@ -63,6 +63,7 @@ class Editor extends React.Component {
     }
 
     executeEval(sourceCode) {
+        this.state.container.updateFileData()
         let start = Date.now()
         let settings = null;
         if (document.settings == null) {

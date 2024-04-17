@@ -81,12 +81,15 @@ class Application extends React.Component {
             focusedSuggestionID: null,
             fileTabs: [],
             tabSelected: null,
+            fileStructure: {},
+            fileData: [],
         }
         // Fix it flashing react app before changing
         document.title = 'Programtastic - App';
         document.appContext = this;
         this.timer = null;
         this.editor = null;
+        this.activeFileData = [];
         this.fileTabIDCounter = 0;
     }
 
@@ -104,10 +107,102 @@ class Application extends React.Component {
             console.log(e);
             tokenErrorHandler(e);
         })
+        if (window.localStorage.getItem("currentProject") == null) {
+            window.location.replace("/account");
+        } else {console.log(window.localStorage.getItem("currentProject"))}
+        request(
+            "POST",
+            "/api/v1/application/project/getFilesForProjectByID",
+            {
+                ID: window.localStorage.getItem("currentProject")
+            }
+        ).then((response) => {
+            this.buildFileExplorer(response.data);
+        }).catch((e) => {
+            //Debug data should change later!
+            // Display the actual issue such as invalid username of password on webpage
+            console.log(e)
+            tokenErrorHandler(e);
+        });
+    }
+
+    updateFileData() {
+        console.log("updaing")
+        request (
+            "POST",
+            "/api/v1/application/project/updateFileWithID",
+            {
+                id: this.activeFileData.id,
+                fileName: this.activeFileData.fileName,
+                filePath: this.activeFileData.filePath,
+                fileContents: this.editor.getText()
+            }
+        ).then((response) => {
+            console.log(response.data)
+        })
+    }
+
+    buildFileExplorer(data) {
+        this.setState({fileData: data});
+        console.log(data)
+        let fileData = null
+        let currentFolder = {}
+        for (let index in data){
+            let pathParts = data[index].filePath.split("/");
+            let itemID = data[index].id
+            for (let index in pathParts) {
+                if (pathParts[index] !== ""){
+                    if (fileData == null) {
+                        fileData = {
+                            "name": pathParts[index],
+                            "type": "baseFolder",
+                            "items": []
+                        };
+                        currentFolder = fileData;
+                    }
+                    if (index < pathParts.length - 1) {
+                        //this is a folder
+                        if (index > 1) {
+                            let locatedFolder = currentFolder.items.find(part => part.name == pathParts[index]);
+                            if (locatedFolder === undefined) {
+                                let newFolder = {
+                                    "name": pathParts[index],
+                                    "type": "folder",
+                                    "items": []
+                                }
+                                currentFolder.items.push(newFolder);
+                                currentFolder = newFolder;
+                            } else {
+                                currentFolder = locatedFolder;
+                            }
+                        }
+                    } else {
+                        //this is a file
+                        let newFile = {
+                            "name": pathParts[index],
+                            "type": "file",
+                            "id": itemID
+                        }
+                        currentFolder.items.push(newFile);
+                    }
+                }
+            }
+            currentFolder = fileData
+        }
+
+        //TestingFileStructure
+        console.log(fileData);
+        this.setState({fileStructure: fileData});
+    }
+
+    openFile(id){
+        let selectedFile = this.state.fileData.find(file => file.id == id);
+        console.log(selectedFile);
+        this.openNewTab(selectedFile.id, selectedFile.filePath, selectedFile.fileName, selectedFile.fileContents);
     }
 
     openNewTab (id, path, name, editorContent) {
-        this.setState(prevState => ({fileTabs: [...prevState.fileTabs , {id: this.fileTabIDCounter++, filePath: path, fileName: name, data: editorContent}]}))
+        this.setState(prevState => ({fileTabs: [...prevState.fileTabs , {id: id, filePath: path, fileName: name, data: editorContent}]}))
     }
 
     closeTab(id) {
@@ -120,11 +215,9 @@ class Application extends React.Component {
     }
 
     setActiveTab(id) {
+        this.activeFileData = this.state.fileData.find(file => file.id == id);
         this.setState({fileTabs: this.state.fileTabs.map(tab => (tab.id === this.state.tabSelected ? {...tab, data: this.editor.getText()} : tab))});
         this.setState({tabSelected: id});
-        console.log(id)
-        console.log(this.state.fileTabs)
-        console.log(this.state.fileTabs.find(tab => tab.id === id))
         this.editor.setText((this.state.fileTabs.find(tab => tab.id === id)).data);
         this.editor.executeEval((this.state.fileTabs.find(tab => tab.id === id)).data);
     }
@@ -215,7 +308,7 @@ class Application extends React.Component {
                     <section className="fileViewerContainer">
                             <div className="fileViewer">
                                 <section className="panelBody fileViewerPanel">
-                                    <FileExplorer filesData={TestingFileStructure} />
+                                    <FileExplorer filesData={this.state.fileStructure} />
                                 </section>
                                 <div className="bottomPanelQuickInfo">
                                     <h4 className="bottomPanelQuickInfoStat ">SuperCoolProject</h4>
