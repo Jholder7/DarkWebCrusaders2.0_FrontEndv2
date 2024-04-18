@@ -16,17 +16,20 @@ class Editor extends React.Component {
         };
         this.timer = null;
         this.state.container.editor = this;
+        this.editorRef = React.createRef(null);
     }
 
     onChange = (newValue) => {
         this.setState({editorText: newValue});
-        this.state.container.setState({lineCount: newValue.split('\n').length});
-        this.state.container.setState({status: "Waiting..."})
+        if (this.state.container.enableBottomTicks) {
+            this.state.container.setState({lineCount: this.editorRef.current.editor.session.getLength()});
+            this.state.container.setState({status: "Waiting..."})
+        }
         if (this.timer == null) {
-            this.timer = setTimeout(() =>{this.executeEval(newValue); this.state.container.setState({status: "Computing..."})}, 1000);
+            this.timer = setTimeout(() =>{this.executeEval(newValue); this.state.container.updateFileData(); this.state.container.setState({status: "Computing..."})}, 1000);
         } else {
             clearTimeout(this.timer)
-            this.timer = setTimeout(() =>{this.executeEval(newValue); this.state.container.setState({status: "Computing..."})}, 1000);
+            this.timer = setTimeout(() =>{this.executeEval(newValue); this.state.container.updateFileData(); this.state.container.setState({status: "Computing..."})}, 1000);
         }
     }
 
@@ -58,15 +61,26 @@ class Editor extends React.Component {
         this.executeEval(newText);
     }
 
+    remoteTriggerEval() {
+        this.executeEval(this.state.editorText);
+    }
+
     executeEval(sourceCode) {
+        // this.state.container.updateFileData()
         let start = Date.now()
+        let settings = null;
+        if (document.settings == null) {
+            settings = ["3Allman"];
+        } else {
+            settings = document.settings
+        }
         request(
             "POST",
             "/api/v1/application/evalFile",
             {
                 fileTitle: "TestFileName.js",
                 fileContents: sourceCode.replaceAll("\r", "").replaceAll("\"", "\u0022"),
-                settings: ["3Allman"]
+                settings: settings
             }
         ).then((response) => {
             this.state.container.clearSuggestionCard();
@@ -136,6 +150,7 @@ class Editor extends React.Component {
                     <link type="text/css" href="Editor.css"/>
                 </header>
                 <AceEditor
+                    ref={this.editorRef}
                     style={{"borderRadius": "0 0 5px 5px", "background": "none"}}
                     value={this.state.editorText}
                     markers={this.state.markers}

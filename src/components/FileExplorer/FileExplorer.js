@@ -3,7 +3,6 @@ import "./FileExplorer.css"
 import fileIcon from "./resources/file.svg"
 import folder from "./resources/folder.svg"
 import folderOpen from "./resources/folderOpen.svg"
-import { Resizable, ResizableBox } from "react-resizable";
 
 class FileExplorer extends React.Component {
     constructor(props) {
@@ -23,7 +22,7 @@ class FileExplorer extends React.Component {
     render() {
         if (this.state.filesData.type === "file") {
             return (
-                <div className="file">
+                <div className="file" onClick={() => {document.appContext.openFile(this.state.filesData.id)}} >
                     <link rel="stylesheet"
                           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0"/>
                     <link type="text/css" href="FileExplorer.css"/>

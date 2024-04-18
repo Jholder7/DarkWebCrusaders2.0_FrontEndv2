@@ -244,6 +244,7 @@
     height: 100%;
     margin-top: 10px;
     border-radius: 5px;
+    overflow-y: auto;
 }
 .rightPanelInnerContent {
     width: 60%;
@@ -305,4 +306,79 @@
 }
 .project:active{
     background: rgba(68, 71, 114, 0.34);
+}
+.hiddenEl {
+    display: none;
+}
+.projectUploadLayover {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(23, 23, 35, 0.50);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.projectUpload {
+    background: var(--background-panel);
+    border-radius: 5px;
+    width: 60%;
+    height: 60%;
+    min-width: 800px;
+    min-height: 500px;
+}
+.upload{
+    height: 90%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    box-sizing: content-box;
+}
+.uploadInner{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.uploadIcon{
+    height: 140px;
+    width: auto;
+}
+.buttonBar{
+    display: flex;
+    height: 10%;
+    align-items: center;
+}
+.uploadButton{
+    margin: 10px;
+}
+.padLeft{
+    margin-left: auto;
+}
+.uploadHeader {
+    font-size: 60px;
+    font-weight: 600;
+}
+.uploadSubheader {
+    font-size: 15px;
+    font-weight: 300;
+}
+.uploadProgressBar {
+    margin-top: 10px;
+    background: var(--base-font);
+    border-style: none;
+    height: 5px;
+    border-radius: 5px;
+    width: 400px;
+}
+.uploadProgressBar::-webkit-progress-value {
+    background: linear-gradient(45deg, var(--accent-purple), var(--accent-blue));
+}
+.uploadProgressBar::-moz-progress-bar{
+    background: linear-gradient(45deg, var(--accent-purple), var(--accent-blue));
 }

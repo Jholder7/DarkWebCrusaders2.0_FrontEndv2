@@ -1,0 +1,66 @@
+.toggleButtont{
+    width: 380px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background: none;
+    color: white;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgba(0, 0, 0, 0.24);
+    margin: 5px;
+    background: rgba(0, 0, 0, 0.11);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.toggleButtonTopt {
+    margin-top: 3px;
+    width: 375px;
+    display: flex;
+    align-items: center;
+}
+
+.toggleTitlet{
+    font-size: 17px;
+    margin-left: 10px;
+    font-weight: 100;
+}
+
+.toggleBackingt {
+    width: 50px;
+    height: 15px;
+    margin-left: auto;
+    background: linear-gradient(45deg, rgba(237, 75, 255, 0.18), rgba(75, 75, 255, 0.18));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    margin-right: 5px;
+}
+
+.toggleTickert {
+    background: linear-gradient(45deg, var(--accent-purple), var(--accent-blue));
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+}
+
+.backingTickedt{
+    background: linear-gradient(45deg, rgba(237, 75, 255, 0.89), rgba(75, 75, 255, 0.91));
+}
+
+.tickerTickedt {
+    margin-left: auto;
+}
+
+.backgroundTickedt {
+    background: linear-gradient(45deg, rgba(237, 75, 255, 0.25), rgba(75, 75, 255, 0.25));
+    border-color: rgba(0, 0, 0);
+}
+
+.codePreviewt {
+    margin: 10px;
+    text-align: left;
+    border-radius: 5px;
+}

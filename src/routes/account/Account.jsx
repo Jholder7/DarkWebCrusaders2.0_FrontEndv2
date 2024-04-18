@@ -8,19 +8,132 @@ import dropIcon from './resources/drop.svg'
 import accountIcon from './resources/account.svg'
 import reportIcon from './resources/report.svg'
 import newIcon from './resources/new.svg'
+import uploadIcon from './resources/upload.svg'
+import Dropzone from 'react-dropzone'
+import {request, tokenErrorHandler} from "../../axios_helper";
 
 export default class Account extends React.Component{
     constructor(props) {
         super(props)
         this.state = {
-
+            isUploading: false,
+            uploadStarted: false,
+            fileLoadComplete: false,
+            newFiles: [],
+            projects: [],
+            loadStatus: 0,
         }
+        this.filesLoaded = 0
+        this.newFileData = []
         document.title = 'Programtastic - Account';
     }
+
+    HandleFile(event) {
+        for(let file of event.target.files) {
+            console.log("")
+        }
+    }
+
+    componentDidMount() {
+        request(
+            "POST",
+            "/api/v1/application/project/getUsersProjects",
+            {}
+        ).then((response) => {
+            this.setState({projects: response.data})
+        }).catch((e) => {
+            console.log(e)
+            tokenErrorHandler(e);
+        });
+    }
+
+    createProject(newFiles) {
+        let formattedFilesData = []
+        for (let file of newFiles) {
+            let tempFileData = {
+                fileName: file.name,
+                filePath: file.path,
+                fileContents: file.contents
+            }
+            formattedFilesData.push(tempFileData);
+        }
+        request(
+            "POST",
+            "/api/v1/application/project/createNewProject",
+            {
+                projectName: formattedFilesData[0].filePath.split("/")[1],
+                lastEdited: (new Date()).toISOString(),
+                projectSize: 5,
+                files: formattedFilesData
+            }
+        ).then((response) => {
+            window.localStorage.setItem("currentProject", response.data.id)
+            window.location.replace("/application");
+        }).catch((e) => {
+            //Debug data should change later!
+            // Display the actual issue such as invalid username of password on webpage
+            console.log(e)
+            tokenErrorHandler(e);
+        });
+    }
+
 
     render() {
         return (
             <main className="body">
+                <div className={this.state.isUploading ? "projectUploadLayover" : "hiddenEl"}>
+                    <div className="projectUpload">
+                        <Dropzone onDrop={acceptedFiles => {
+                            //Files are uploading correctly but we will need to make the progress bar show this
+                            // Then when create is pressed send data to server and display loading screen until complete
+                            this.setState({loadStatus: 0})
+                            this.setState({uploadStarted: true});
+                            let total = 100 / acceptedFiles.length;
+                            this.newFileData = []
+                            for (let file of acceptedFiles) {
+                                let data = {name: file.name, path: file.path, contents: -1 };
+                                file.text().then(con => {
+                                    data.contents = con
+                                    this.setState(prevState => ({loadStatus: prevState.loadStatus + total}));
+                                    this.filesLoaded = this.filesLoaded + 1
+                                    if (this.filesLoaded >= acceptedFiles.length) {
+                                        this.setState({fileLoadComplete: true})
+                                    }
+                                });
+                                this.newFileData.push(data);
+                            }
+                        }}>
+                            {({getRootProps, getInputProps}) => (
+                                <section className="upload">
+                                    <div {...getRootProps({className: 'uploadInner'})}>
+                                        <input {...getInputProps()} />
+                                        <h1 className="uploadHeader">Upload Project</h1>
+                                        <img src={uploadIcon} alt="Upload Project" className="uploadIcon"/>
+                                        <h2 className="uploadSubheader">Drag and Drop or Press To Upload</h2>
+                                        <progress className={this.state.uploadStarted ? "uploadProgressBar" : "hiddenEl"} max={100} value={this.state.loadStatus}></progress>
+                                    </div>
+                                </section>
+                            )}
+                        </Dropzone>
+                        <div className="buttonBar">
+                            <div className="subheadingBar padLeft uploadButton">
+                                <button className="subheadingBarButton" onClick={() => {
+                                    this.setState({isUploading: false});
+                                    this.setState({uploadStarted: false});
+                                    this.setState({loadStatus: 0})
+                                    this.setState({fileLoadComplete: false})
+                                    this.setState({newFiles: []})
+                                    this.filesLoaded = 0;
+                                }}><div>Cancel</div></button>
+                            </div>
+                            <div className={this.state.fileLoadComplete ? "subheadingBar uploadButton" : "hidden"}>
+                                <button className="subheadingBarButton" onClick={() => {
+                                    this.createProject(this.newFileData);
+                                }}><div>Create</div></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <link rel="preconnect" href="https://fonts.googleapis.com"/>
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true"/>
                 <link
@@ -69,6 +182,7 @@ export default class Account extends React.Component{
                                 <div className="pageSubheadingButtonBar">
                                     <div className="subheadingBar">
                                         <button className="subheadingBarButton" onClick={() => {
+                                            this.setState({isUploading: true});
                                         }}>
                                             <div>
                                                 <img className="leftPanelPageIcon"
@@ -88,34 +202,27 @@ export default class Account extends React.Component{
                                     </div>
                                 </div>
                                 <section className="projectListContainer">
-                                    <div className="project">
-                                        <div className="projectBar">
-                                            <div className="projectIcon"></div>
-                                            <h4 className="projectTitle">Example Project</h4>
-                                            <h4 className="projectTimeStamp">2 Days Ago</h4>
-                                            <h4 className="projectSize">89 KB</h4>
-                                        </div>
-                                        <div className="projectBar">
-                                            <h4 className="projectLang">Java</h4>
-                                            <h4 className="projectStat">Style Corrections: 12</h4>
-                                            <h4 className="projectStat">General Improvements: 2</h4>
-                                            <h4 className="projectStat">Estimated Grade: 40%</h4>
-                                        </div>
-                                    </div>
-                                    <div className="project">
-                                        <div className="projectBar">
-                                            <div className="projectIcon"></div>
-                                            <h4 className="projectTitle">Another Project</h4>
-                                            <h4 className="projectTimeStamp">12 Days Ago</h4>
-                                            <h4 className="projectSize">189 MB</h4>
-                                        </div>
-                                        <div className="projectBar">
-                                            <h4 className="projectLang">C#</h4>
-                                            <h4 className="projectStat">Style Corrections: 0</h4>
-                                            <h4 className="projectStat">General Improvements: 2</h4>
-                                            <h4 className="projectStat">Estimated Grade: 98%</h4>
-                                        </div>
-                                    </div>
+                                    {
+                                        this.state.projects.map((project, index) => (
+                                            <div onClick={() => {
+                                                window.localStorage.setItem("currentProject", project.id)
+                                                window.location.replace("/application");
+                                            }} key={index} className="project">
+                                                <div className="projectBar">
+                                                    <div className="projectIcon"></div>
+                                                    <h4 className="projectTitle">{project.projectName}</h4>
+                                                    <h4 className="projectTimeStamp">{(new Date(project.lastEdited)).toDateString()}</h4>
+                                                    <h4 className="projectSize">{project.projectSize} KB</h4>
+                                                </div>
+                                                <div className="projectBar">
+                                                    <h4 className="projectLang">Java</h4>
+                                                    <h4 className="projectStat">{"Style Corrections: " + project.projectStyleCorrections}</h4>
+                                                    <h4 className="projectStat">{"General Improvements: " + project.projectGeneralImprovements}</h4>
+                                                    <h4 className="projectStat">{"Estimated Grade: " + project.projectEstimatedGrade}</h4>
+                                                </div>
+                                            </div>
+                                        ))
+                                    }
                                 </section>
                             </div>
                         </section>
