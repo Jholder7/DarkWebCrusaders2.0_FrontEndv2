@@ -10,61 +10,6 @@ import Toggle from "../../components/ToggleShowAndHide/Toggle";
 import exit from "./resources/exit.svg";
 import {request, tokenErrorHandler} from "../../axios_helper";
 
-let TestingFileStructure = {
-    "name": "SuperCoolProject",
-    "type": "baseFolder",
-    "items": [
-        {
-            "name": ".gitignore",
-            "type": "file",
-        },
-        {
-            "name": "index.html",
-            "type": "file",
-        },
-        {
-            "name": "components",
-            "type": "folder",
-            "items": [
-                {
-                    "name": "editor",
-                    "type": "folder",
-                    "items": [
-                        {
-                            "name": "Editor.js",
-                            "type": "file"
-                        },
-                        {
-                            "name": "Editor.css",
-                            "type": "file"
-                        }
-
-                    ]
-                },
-                {
-                    "name": "StatBox",
-                    "type": "folder",
-                    "items": [
-                        {
-                            "name": "StatBox.js",
-                            "type": "file"
-                        },
-                        {
-                            "name": "StatBox.css",
-                            "type": "file"
-                        }
-
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "main.java",
-            "type": "file",
-        },
-    ]
-}
-
 class Application extends React.Component {
     constructor(props) {
         super(props);
@@ -91,6 +36,7 @@ class Application extends React.Component {
         this.editor = null;
         this.activeFileData = [];
         this.fileTabIDCounter = 0;
+        this.enableBottomTicks = true;
     }
 
     componentDidMount = () => {
@@ -127,7 +73,6 @@ class Application extends React.Component {
     }
 
     updateFileData() {
-        console.log("updaing")
         request (
             "POST",
             "/api/v1/application/project/updateFileWithID",
@@ -202,7 +147,13 @@ class Application extends React.Component {
     }
 
     openNewTab (id, path, name, editorContent) {
-        this.setState(prevState => ({fileTabs: [...prevState.fileTabs , {id: id, filePath: path, fileName: name, data: editorContent}]}))
+        if (this.state.fileTabs.find(file => file.id == id)) {
+            this.setActiveTab(id);
+        } else {
+            this.setState(prevState => ({fileTabs: [...prevState.fileTabs , {id: id, filePath: path, fileName: name, data: editorContent}]}), () =>{
+                this.setActiveTab(id);
+            })
+        }
     }
 
     closeTab(id) {
@@ -292,7 +243,7 @@ class Application extends React.Component {
                                 {/*<img className="accountNavSectionProfilePictureImage" alt="Account Profile Picture" src=""/>*/}
                                 <div className="accountNavSectionProfilePictureImage"></div>
                             </div>
-                            <p className="accountNavSectionUsername">{this.state.username}</p>
+                            <h1 className="accountNavSectionUsername">{this.state.username}</h1>
                             <div className="navBackgroundChisel">
                                 <div className="navBackgroundChiselNegative"/>
                             </div>
@@ -369,7 +320,20 @@ class FileTab extends React.Component {
     }
 
     closeTab() {
-        document.appContext.closeTab(this.state.id);
+        // Current broken fix
+        document.appContext.setState(prevState => ({fileData: prevState.fileData.map(file => {
+                if (file.id != document.appContext.activeFileData.id)   {
+                    return file;
+                } else {
+                    return {
+                        id: document.appContext.activeFileData.id,
+                        fileName: document.appContext.activeFileData.fileName,
+                        filePath: document.appContext.activeFileData.filePath,
+                        fileContents: document.appContext.editor.getText()
+                    }
+                }
+        })}), () => document.appContext.closeTab(this.state.id));
+        //document.appContext.closeTab(this.state.id)
     }
 
     openTab() {

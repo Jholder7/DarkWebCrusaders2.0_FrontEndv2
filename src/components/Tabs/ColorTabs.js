@@ -189,9 +189,9 @@ export default function ColorTabs() {
                               supportedLanguages="Java, C#"/>
             </TabPanel>
             <TabPanel value="two">
-                <button onClick={() => {
-                    document.appContext.openNewTab(0, null, "Blank.txt", "txt");
-                }}>Open Blank Tab
+                <button style={{color: "black"}} onClick={() => {
+                    document.appContext.enableBottomTicks = !document.appContext.enableBottomTicks;
+                }}>Disable Bottom Ticks
                 </button>
             </TabPanel>
         </TabContext>
