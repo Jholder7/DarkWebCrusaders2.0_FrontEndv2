@@ -10,7 +10,7 @@ class Editor extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            editorText: "",
+            editorText: null,
             markers: [],
             container: document.appContext,
         };
@@ -139,8 +139,9 @@ class Editor extends React.Component {
     }
 
     render() {
+        console.log("text: " + this.state.editorText)
         return (
-            <div className="editorContainer">
+            <div className={this.state.editorText == null ? "hidden" : "editorContainer"}>
                 <header>
                     <link rel="preconnect" href="https://fonts.googleapis.com"/>
                     <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true"/>
@@ -154,10 +155,10 @@ class Editor extends React.Component {
                     style={{"borderRadius": "0 0 5px 5px", "background": "none"}}
                     value={this.state.editorText}
                     markers={this.state.markers}
-                    className="editor"
+                    className={"editor"}
                     mode="java"
                     theme="one_dark"
-                    placeholder="Type a program here or drag and drop a file here to upload!"
+                    placeholder="Type a program here!"
                     onChange={this.onChange}
                     name="editor"
                     editorProps={{$blockScrolling: true}}
