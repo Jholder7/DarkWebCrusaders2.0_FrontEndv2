@@ -256,7 +256,8 @@ class Application extends React.Component {
                         </section>
                     </nav>
                     <main>
-                    <section className="fileViewerContainer">
+                    <section className="fileViewerContainerFixed">
+                        <Toggle side={2}>
                             <div className="fileViewer">
                                 <section className="panelBody fileViewerPanel">
                                     <FileExplorer filesData={this.state.fileStructure} />
@@ -265,6 +266,7 @@ class Application extends React.Component {
                                     <h4 className="bottomPanelQuickInfoStat ">SuperCoolProject</h4>
                                 </div>
                             </div>
+                        </Toggle>
                         </section>
                         <section className="sourceCodeEditorContainer">
                             <div className="sourceCodeEditor">
