@@ -9,14 +9,18 @@ import accountIcon from './resources/account.svg'
 import reportIcon from './resources/report.svg'
 import newIcon from './resources/new.svg'
 import uploadIcon from './resources/upload.svg'
+import downloadIcon from './resources/download.svg'
 import Dropzone from 'react-dropzone'
 import {request, tokenErrorHandler} from "../../axios_helper";
+import JSZip from "jszip";
+import { saveAs } from 'file-saver';
 
 export default class Account extends React.Component{
     constructor(props) {
         super(props)
         this.state = {
             isUploading: false,
+            isDownloading: false,
             uploadStarted: false,
             fileLoadComplete: false,
             newFiles: [],
@@ -63,12 +67,36 @@ export default class Account extends React.Component{
             {
                 projectName: formattedFilesData[0].filePath.split("/")[1],
                 lastEdited: (new Date()).toISOString(),
-                projectSize: 5,
+                projectSize: 14.2,
                 files: formattedFilesData
             }
         ).then((response) => {
             window.localStorage.setItem("currentProject", response.data.id)
             window.location.replace("/application");
+        }).catch((e) => {
+            //Debug data should change later!
+            // Display the actual issue such as invalid username of password on webpage
+            console.log(e)
+            tokenErrorHandler(e);
+        });
+    }
+
+    downloadProject(project) {
+        request(
+            "POST",
+            "/api/v1/application/project/getFilesForProjectByID",
+            {
+                ID: project.id
+            }
+        ).then((response) => {
+            let zip = new JSZip();
+            for (let file of response.data) {
+                zip.file(file.filePath.slice(1), file.fileContents);
+            }
+            zip.generateAsync({type:"blob"})
+                .then(function(content) {
+                    saveAs(content, project.projectName + ".zip");
+                });
         }).catch((e) => {
             //Debug data should change later!
             // Display the actual issue such as invalid username of password on webpage
@@ -91,7 +119,7 @@ export default class Account extends React.Component{
                             let total = 100 / acceptedFiles.length;
                             this.newFileData = []
                             for (let file of acceptedFiles) {
-                                let data = {name: file.name, path: file.path, contents: -1 };
+                                let data = {name: file.name, path: file.path, contents: -1};
                                 file.text().then(con => {
                                     data.contents = con
                                     this.setState(prevState => ({loadStatus: prevState.loadStatus + total}));
@@ -110,7 +138,9 @@ export default class Account extends React.Component{
                                         <h1 className="uploadHeader">Upload Project</h1>
                                         <img src={uploadIcon} alt="Upload Project" className="uploadIcon"/>
                                         <h2 className="uploadSubheader">Drag and Drop or Press To Upload</h2>
-                                        <progress className={this.state.uploadStarted ? "uploadProgressBar" : "hiddenEl"} max={100} value={this.state.loadStatus}></progress>
+                                        <progress
+                                            className={this.state.uploadStarted ? "uploadProgressBar" : "hiddenEl"}
+                                            max={100} value={this.state.loadStatus}></progress>
                                     </div>
                                 </section>
                             )}
@@ -124,12 +154,36 @@ export default class Account extends React.Component{
                                     this.setState({fileLoadComplete: false})
                                     this.setState({newFiles: []})
                                     this.filesLoaded = 0;
-                                }}><div>Cancel</div></button>
+                                }}>
+                                    <div>Cancel</div>
+                                </button>
                             </div>
                             <div className={this.state.fileLoadComplete ? "subheadingBar uploadButton" : "hidden"}>
                                 <button className="subheadingBarButton" onClick={() => {
                                     this.createProject(this.newFileData);
-                                }}><div>Create</div></button>
+                                }}>
+                                    <div>Create</div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className={this.state.isDownloading ? "projectUploadLayover" : "hiddenEl"}>
+                    <div className="projectUpload">
+                        <section className="upload">
+                            <div className="uploadInner">
+                                <h1 className="uploadHeader">Project Download</h1>
+                                <img src={downloadIcon} alt="Upload Project" className="uploadIcon"/>
+                                <h2 className="uploadSubheader">Download Beginning Shortly</h2>
+                            </div>
+                        </section>
+                        <div className="buttonBar">
+                            <div className="subheadingBar padLeft uploadButton">
+                                <button className="subheadingBarButton" onClick={() => {
+                                    this.setState({isDownloading: false});
+                                }}>
+                                    <div>Done</div>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -153,7 +207,12 @@ export default class Account extends React.Component{
                             <div className="bugReport">
                                 <button className="bugReportButton">
                                     <div><img className="leftPanelPageIcon"
-                                              style={{"width": "17px", "height": "auto", "marginRight": "10px", "marginLeft": "-8px"}}
+                                              style={{
+                                                  "width": "17px",
+                                                  "height": "auto",
+                                                  "marginRight": "10px",
+                                                  "marginLeft": "-8px"
+                                              }}
                                               alt="Bug" src={bugIcon}/>Report Bug
                                     </div>
                                 </button>
@@ -212,10 +271,24 @@ export default class Account extends React.Component{
                                                     <div className="projectIcon"></div>
                                                     <h4 className="projectTitle">{project.projectName}</h4>
                                                     <h4 className="projectTimeStamp">{(new Date(project.lastEdited)).toDateString()}</h4>
+                                                    <h4 className="projectLang">Java</h4>
                                                     <h4 className="projectSize">{project.projectSize} KB</h4>
                                                 </div>
                                                 <div className="projectBar">
-                                                    <h4 className="projectLang">Java</h4>
+                                                    <button className="subheadingBarButton"
+                                                            style={{
+                                                                "width": "80px",
+                                                                "height": "25px",
+                                                                "marginRight": "auto",
+                                                                "marginLeft": "-5px"
+                                                            }}
+                                                            onClick={(event) => {
+                                                                event.stopPropagation();
+                                                                this.setState({isDownloading: true});
+                                                                this.downloadProject(project);
+                                                            }}>
+                                                        <div>Download</div>
+                                                    </button>
                                                     <h4 className="projectStat">{"Style Corrections: " + project.projectStyleCorrections}</h4>
                                                     <h4 className="projectStat">{"General Improvements: " + project.projectGeneralImprovements}</h4>
                                                     <h4 className="projectStat">{"Estimated Grade: " + project.projectEstimatedGrade}</h4>

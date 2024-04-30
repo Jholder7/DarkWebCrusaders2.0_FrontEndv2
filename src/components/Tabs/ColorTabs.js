@@ -36,7 +36,7 @@ export default function ColorTabs() {
                 aria-label="secondary tabs example"
             >
                 <Tab value="one" label="Style Standard" />
-                <Tab value="two" label="Other Settigns" />
+                <Tab value="two" label="Other Settings" />
             </Tabs>
             <TabPanel value="one" className="tabContainer" >
                 <ToggleButton onClick={() => {addSetting("3Allman")}} title="Allman Style" initialState={settings.includes("3Allman")} preview={"int Foo(bool isBar)\n" +

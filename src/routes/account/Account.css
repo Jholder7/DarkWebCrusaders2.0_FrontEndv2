@@ -298,7 +298,7 @@
     margin: 0 0 0 20px;
 }
 .projectLang {
-    margin-right: auto;
+    margin-left: 20px;
     font-weight: 400;
 }
 .project:hover{

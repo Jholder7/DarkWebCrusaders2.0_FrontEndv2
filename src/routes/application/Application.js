@@ -238,7 +238,7 @@ class Application extends React.Component {
                 </header>
                 <div className="body">
                     <nav>
-                        <div className="accountNavSection">
+                        <div className="accountNavSection" onClick={() => {window.location.replace("/account");}}>
                             <div className="accountNavSectionProfilePicture">
                                 {/*<img className="accountNavSectionProfilePictureImage" alt="Account Profile Picture" src=""/>*/}
                                 <div className="accountNavSectionProfilePictureImage"></div>
